@@ -1,0 +1,5 @@
+Sub ShowDataEntryForm()
+    ' This sub will show your UserForm.
+    ' We assume your form is named UserForm1. If not, change the name below.
+    UserForm1.Show
+End Sub

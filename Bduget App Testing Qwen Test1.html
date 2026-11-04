@@ -1,0 +1,113 @@
+  {/* Budget Overview */}
+  <View style={styles.card}>
+    <View style={styles.row}>
+      <Text style={styles.label}>Monthly Budget</Text>
+      <Text style={styles.value}>R33,275.64</Text>
+    </View>
+    <View style={styles.row}>
+      <Text style={styles.label}>Spent</Text>
+      <Text style={styles.value}>R11,216.36</Text>
+    </View>
+    <View style={[styles.row, styles.lastRow]}>
+      <Text style={styles.label}>Remaining</Text>
+      <Text style={[styles.value, styles.highlight]}>R22,059.28</Text>
+    </View>
+
+    <View style={styles.progressBar}>
+      <View style={[styles.progressFill, { width: '34%' }]} />
+    </View>
+    <Text style={styles.percentageText}>34% used</Text>
+  </View>
+
+  {/* Categories */}
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>CATEGORIES</Text>
+    
+    {budgetCategories.map((category, index) => (
+      <TouchableOpacity key={index} style={styles.categoryCard}>
+        <View style={styles.categoryHeader}>
+          <Text style={styles.categoryName}>{category.name}</Text>
+          <TouchableOpacity>
+            <Ionicons name="create-outline" size={20} color={colors.emerald} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.categoryRow}>
+          <Text style={styles.categoryLabel}>Spent:</Text>
+          <Text style={styles.categoryValue}>R{category.spent.toFixed(2)}</Text>
+        </View>
+        <View style={styles.categoryRow}>
+          <Text style={styles.categoryLabel}>Budget:</Text>
+          <Text style={styles.categoryValue}>R{category.budget.toFixed(2)}</Text>
+        </View>
+        <View style={[styles.categoryRow, styles.lastRow]}>
+          <Text style={[styles.categoryLabel, category.overBudget && { color: colors.mutedRed }]}>
+            {category.overBudget ? 'Over budget:' : 'Remaining:'}
+          </Text>
+          <Text style={[styles.categoryValue, category.overBudget && { color: colors.mutedRed }]}>
+            R{Math.abs(category.remaining).toFixed(2)}
+          </Text>
+        </View>
+
+        {!category.overBudget && category.alert && (
+          <View style={styles.alertInfo}>
+            <Ionicons name="notifications-outline" size={16} color={colors.greyGreen} />
+            <Text style={styles.alertText}>Alert at: {category.alert}%</Text>
+          </View>
+        )}
+
+        {category.overBudget && (
+          <TouchableOpacity style={styles.reviewButton}>
+            <Text style={styles.reviewText}>Review</Text>
+          </TouchableOpacity>
+        )}
+      </TouchableOpacity>
+    ))}
+  </View>
+
+  {/* Smart Alerts */}
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>SMART ALERTS</Text>
+    
+    <View style={styles.alertToggle}>
+      <View style={styles.toggleRow}>
+        <Ionicons name="checkmark-circle" size={20} color={colors.emerald} />
+        <Text style={styles.toggleText}>Budget threshold alerts</Text>
+      </View>
+    </View>
+
+    <View style={styles.alertToggle}>
+      <View style={styles.toggleRow}>
+        <Ionicons name="checkmark-circle" size={20} color={colors.emerald} />
+        <Text style={styles.toggleText}>Off-trajectory alerts</Text>
+      </View>
+    </View>
+
+    <View style={styles.alertToggle}>
+      <View style={styles.toggleRow}>
+        <Ionicons name="checkmark-circle" size={20} color={colors.emerald} />
+        <Text style={styles.toggleText}>New recurring commitment alerts</Text>
+      </View>
+    </View>
+
+    <View style={styles.alertToggle}>
+      <View style={styles.toggleRow}>
+        <Ionicons name="checkmark-circle" size={20} color={colors.emerald} />
+        <Text style={styles.toggleText}>Impulse spending pattern alerts</Text>
+      </View>
+    </View>
+  </View>
+
+  {/* Action Buttons */}
+  <View style={styles.actions}>
+    <TouchableOpacity style={styles.actionButton}>
+      <Ionicons name="grid" size={20} color={colors.emerald} />
+      <Text style={styles.actionText}>Manage Segments</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity style={styles.actionButton}>
+      <Ionicons name="mail" size={20} color={colors.emerald} />
+      <Text style={styles.actionText}>Email Budget Report</Text>
+    </TouchableOpacity>
+  </View>
+</ScrollView>

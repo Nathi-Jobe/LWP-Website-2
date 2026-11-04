@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Legacy Wealth Planners - Financial Solutions for South African Public Servants</title>
+  <meta name="description" content="Legacy Wealth Planners: Specialized financial planning for South African public servants. Secure your financial future with our tailored risk, estate, investment, and retirement solutions.">
+  <meta name="keywords" content="financial planning, public servant financial advice, South Africa government employee pension, retirement planning">
+  <meta property="og:title" content="Legacy Wealth Planners - Financial Solutions for Public Servants">
+  <meta property="og:description" content="Specialized financial planning for South African public servants. Get tailored solutions for your unique needs.">
+  <meta property="og:image" content="https://legacywealthplanners.co.za/images/og-image.jpg">
+  <meta property="og:url" content="https://legacywealthplanners.co.za">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Legacy Wealth Planners - Financial Solutions for Public Servants">
+  <meta name="twitter:description" content="Specialized financial planning for South African public servants.">
+  <meta name="twitter:image" content="https://legacywealthplanners.co.za/images/twitter-image.jpg">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self';">
+  <link rel="canonical" href="https://legacywealthplanners.co.za/">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Tailwind CSS v2.2.19 -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome 6.5.2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js 4.4.3 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+    .animate-fade-in-down { animation: fadeInDown 0.3s ease-out forwards; }
+    @keyframes fadeInDown {
+      from { opacity:0; transform:translateY(-10px);}
+      to { opacity:1; transform:translateY(0);}
+    }
+    /* PDF-friendly fix: Disable scrollbars for overflow containers in print */
+    @media print {
+      .overflow-x-auto, .overflow-y-auto { overflow: visible !important;}
+      html, body { background: #fff !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "name": "Legacy Wealth Planners",
+    "image": "https://legacywealthplanners.co.za/images/logo.png",
+    "telephone": "+27111234567",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Financial Plaza, Sandton Central",
+      "addressLocality": "Johannesburg",
+      "postalCode": "2196",
+      "addressCountry": "ZA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-26.1052",
+      "longitude": "28.0567"
+    },
+    "url": "https://legacywealthplanners.co.za",
+    "priceRange": "$$",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday","Tuesday","Wednesday","Thursday","Friday"
+        ],
+        "opens": "08:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "09:00",
+        "closes": "12:00"
+      }
+    ],
+    "description": "Specialized financial planning for South African public servants, with expertise in pension benefits optimization."
+  }
+  </script>
+</head>
+
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-white shadow z-50">
+    <div class="container mx-auto flex items-center justify-between px-4 py-3">
+      <a href="#" class="flex items-center space-x-2">
+        <img src="https://legacywealthplanners.co.za/images/logo.png" alt="Legacy Wealth Planners Logo" width="40" height="40" class="h-10 w-10 rounded-full border-2 border-yellow-600">
+        <span class="font-bold text-xl text-blue-900">Legacy Wealth Planners</span>
+      </a>
+      <div class="hidden md:flex space-x-6 text-lg">
+        <a href="#about" class="text-blue-900 hover:text-yellow-700 px-2 py-1 font-semibold">About</a>
+        <a href="#services" class="text-blue-900 hover:text-yellow-700 px-2 py-1 font-semibold">Services</a>
+        <a href="#difference" class="text-blue-900 hover:text-yellow-700 px-2 py-1 font-semibold">Our Difference</a>
+        <a href="#testimonials" class="text-blue-900 hover:text-yellow-700 px-2 py-1 font-semibold">Testimonials</a>
+        <a href="#faq" class="text-blue-900 hover:text-yellow-700 px-2 py-1 font-semibold">FAQ</a>
+        <a href="#contact" class="bg-yellow-600 hover:bg-yellow-700 text-white px-5 py-2 rounded font-bold transition">Consultation</a>
+      </div>
+      <!-- Mobile menu button -->
+      <button id="menu-toggle" class="md:hidden focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
+        <i class="fas fa-bars text-2xl text-blue-900"></i>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white shadow-lg z-40 divide-y divide-gray-100 animate-fade-in-down">
+      <a href="#about" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">
+        <i class="fas fa-user-tie w-8 text-yellow-600"></i> About Us
+      </a>
+      <a href="#services" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">
+        <i class="fas fa-briefcase w-8 text-yellow-600"></i> Services
+      </a>
+      <a href="#difference" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">
+        <i class="fas fa-lightbulb w-8 text-yellow-600"></i> Our Difference
+      </a>
+      <a href="#testimonials" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">
+        <i class="fas fa-comment-dots w-8 text-yellow-600"></i> Testimonials
+      </a>
+      <a href="#faq" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">
+        <i class="fas fa-question-circle w-8 text-yellow-600"></i> FAQ
+      </a>
+      <a href="#contact" class="block px-4 py-3 text-lg text-white bg-yellow-600 hover:bg-yellow-700">
+        <i class="fas fa-calendar-check w-8"></i> Consultation
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative flex items-center justify-center min-h-screen pt-24 pb-16 bg-blue-900">
+    <!-- Background image with gradient overlay -->
+    <div class="absolute inset-0 z-0">
+      <img src="https://c8.alamy.com/comp/T7JYC5/johannesburg-skyline-aerial-view-over-the-central-business-district-cbd-from-the-carlton-tower-johannesburg-south-africa-T7JYC5.jpg"
+           alt="Johannesburg skyline" class="object-cover w-full h-full brightness-75">
+      <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/80"></div>
+    </div>
+    <div class="container relative z-10 mx-auto px-4 text-center flex flex-col space-y-8">
+      <h1 class="text-white text-4xl md:text-5xl font-extrabold mb-2 leading-tight drop-shadow-lg">
+        Secure Your Legacy with<br>Expert Financial Planning
+      </h1>
+      <p class="text-xl md:text-2xl text-blue-100 mb-6 drop-shadow">
+        Specialized guidance for South African <span class="text-yellow-400 font-bold">public servants</span>. <br>Protect your family. Grow your wealth. Retire with confidence.
+      </p>
+      <a href="#contact" class="inline-block bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 rounded-lg font-bold text-lg shadow hover:shadow-xl transition">
+        Book a Free Consultation
+      </a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="md:flex md:items-center md:space-x-10">
+        <div class="flex-shrink-0 flex justify-center md:justify-start mb-8 md:mb-0">
+          <img src="https://thezacapital.co.za/wp-content/uploads/2020/12/thabiso-ramasike.jpg"
+               alt="Nkosinathi Sithole - Lead Financial Advisor"
+               width="320" height="320"
+               class="object-cover rounded-full shadow-lg w-64 h-64 sm:w-80 sm:h-80 border-4 border-yellow-600"
+               loading="lazy">
+        </div>
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Who We Are</h2>
+          <p class="text-lg md:text-xl text-gray-700 mb-4">
+            Legacy Wealth Planners is an independent financial advisory firm devoted to empowering South Africa's public servants.
+            Our seasoned advisors bring years of experience and cultural insight to every strategy—ensuring you and your family are protected from life's uncertainties, while building lasting prosperity.
+          </p>
+          <ul class="space-y-2 text-gray-900 font-medium">
+            <li><i class="fas fa-check-circle text-yellow-600 mr-2"></i> Experts in local government and public service benefit structures</li>
+            <li><i class="fas fa-check-circle text-yellow-600 mr-2"></i> Personal, caring approach rooted in integrity and transparency</li>
+            <li><i class="fas fa-check-circle text-yellow-600 mr-2"></i> Trusted by educators, police officers, health workers, and more</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">Our Services</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
+          <span class="text-yellow-600 text-4xl mb-4"><i class="fas fa-user-shield"></i></span>
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Risk Cover Solutions</h3>
+          <p class="text-gray-700">Comprehensive life, disability, and critical illness cover—designed to plug the gaps in standard benefits for true security.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
+          <span class="text-yellow-600 text-4xl mb-4"><i class="fas fa-seedling"></i></span>
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Investment & Retirement Planning</h3>
+          <p class="text-gray-700">Guidance on maximizing your retirement income, investing wisely, and future-proofing your savings for you and your family.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
+          <span class="text-yellow-600 text-4xl mb-4"><i class="fas fa-file-signature"></i></span>
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Estate & Education Planning</h3>
+          <p class="text-gray-700">Wills, trusts, and education funds—structured to protect your legacy and ensure your children’s future is bright and secure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Difference Section with Comparison Chart -->
+  <section id="difference" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">What Sets Us Apart</h2>
+      <div class="md:flex md:space-x-10 items-center">
+        <div class="md:w-2/5 mb-8 md:mb-0">
+          <div class="bg-white p-6 rounded-lg shadow-md border border-blue-50">
+            <h4 class="text-xl font-semibold text-blue-900 mb-4">Public Service Benefits & Protection Gaps</h4>
+            <div class="overflow-x-auto md:overflow-x-visible">
+              <table class="min-w-full bg-white text-sm md:text-base">
+                <thead>
+                  <tr>
+                    <th class="py-2 px-3 bg-blue-900 text-white text-left">Protection Need</th>
+                    <th class="py-2 px-3 bg-blue-900 text-white text-center">Standard Coverage</th>
+                    <th class="py-2 px-3 bg-blue-900 text-white text-center">Our Solutions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-2 px-3">Death Benefits</td>
+                    <td class="py-2 px-3 text-center">Partial <i class="fas fa-check-circle text-yellow-600"></i></td>
+                    <td class="py-2 px-3 text-center">Full <i class="fas fa-check-circle text-green-600"></i></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 px-3">Funeral Cover</td>
+                    <td class="py-2 px-3 text-center">Limited <i class="fas fa-exclamation-circle text-yellow-600"></i></td>
+                    <td class="py-2 px-3 text-center">Comprehensive <i class="fas fa-check-circle text-green-600"></i></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-2 px-3">Disability Coverage</td>
+                    <td class="py-2 px-3 text-center">Basic <i class="fas fa-exclamation-circle text-yellow-600"></i></td>
+                    <td class="py-2 px-3 text-center">Enhanced <i class="fas fa-check-circle text-green-600"></i></td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3">Children's Education</td>
+                    <td class="py-2 px-3 text-center">None <i class="fas fa-times-circle text-red-600"></i></td>
+                    <td class="py-2 px-3 text-center">Full <i class="fas fa-check-circle text-green-600"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-3/5 flex flex-col space-y-6">
+          <h3 class="text-2xl font-semibold text-blue-900 mb-2">Why Clients Trust Us</h3>
+          <ul class="list-disc list-inside ml-2 text-gray-800 space-y-2">
+            <li>Tailored advice integrating employer benefits with private solutions</li>
+            <li>Simple, actionable plans for every career stage</li>
+            <li>Family-focused support for life's major events and uncertainties</li>
+            <li>Trusted local advisors with deep public sector expertise</li>
+          </ul>
+          <!-- Example Chart: Income Replacement -->
+          <div class="bg-blue-50 rounded-lg px-4 py-3 shadow-sm border border-blue-100">
+            <h4 class="text-lg font-semibold text-blue-900 mb-2">Retirement Income Gap Example</h4>
+            <canvas id="incomeGapChart" width="400" height="200"></canvas>
+          </div>
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              new Chart(document.getElementById('incomeGapChart'), {
+                type: 'bar',
+                data: {
+                  labels: ['Public Servant'],
+                  datasets: [
+                    {
+                      label: 'Standard Pension',
+                      data: [60],
+                      backgroundColor: '#2563eb'
+                    },
+                    {
+                      label: 'With Our Planning',
+                      data: [95],
+                      backgroundColor: '#f59e42'
+                    }
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  plugins: { legend: { position: 'bottom' } },
+                  scales: {
+                    y: { min: 0, max: 100, title: { display: true, text: 'Retirement Income (%)' } }
+                  }
+                }
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Story Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+        <h5 class="text-lg font-semibold text-blue-900 mb-2">Case Study: Educator Retirement Planning</h5>
+        <p class="text-gray-700 mb-3">
+          A 45-year-old teacher with 15 years of service discovered standard benefits would only provide 60% of her needed retirement income. Our personalized strategy:
+        </p>
+        <ul class="text-gray-700 list-disc pl-5 mb-3">
+          <li>Optimized benefit options for maximum value</li>
+          <li>Added tax-efficient investments aligned with her risk profile</li>
+          <li>Established education funding for her children</li>
+          <li>Created estate planning documents that worked seamlessly with her existing benefits</li>
+        </ul>
+        <p class="font-semibold text-blue-900">Result: 95% income replacement at retirement with enhanced family protection.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infographic Illustration -->
+  <section class="py-8 bg-white">
+    <div class="container mx-auto px-4 flex flex-col items-center">
+      <h3 class="text-xl font-semibold text-blue-900 mb-4">The Value of an Integrated Financial Plan</h3>
+      <img src="https://www.henceforward.co.za/wp-content/uploads/2024/05/GEPF-Retirement-Benefits-1024x1024.png"
+         alt="Retirement Benefits Graphic"
+         width="360" height="360"
+         class="rounded shadow-md border border-blue-200 mb-2"
+         loading="lazy"/>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">What Our Clients Say</h2>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-md p-6 flex flex-col relative hover:shadow-xl transition duration-300">
+          <div class="absolute -top-4 -left-2 text-4xl text-yellow-500 opacity-50">
+            <i class="fas fa-quote-left"></i>
+          </div>
+          <p class="text-gray-700 mb-4 text-lg">
+            "Legacy Wealth Planners explained my complex benefits so clearly. They structured my investments and estate to protect my family—true peace of mind!"
+          </p>
+          <div class="flex items-center">
+            <span class="font-bold text-blue-900">— Thandi S., Gauteng Educator</span>
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg shadow-md p-6 flex flex-col relative hover:shadow-xl transition duration-300">
+          <div class="absolute -top-4 -left-2 text-4xl text-yellow-500 opacity-50">
+            <i class="fas fa-quote-left"></i>
+          </div>
+          <p class="text-gray-700 mb-4 text-lg">
+            "Their team knows public servant benefits inside out. My retirement and disability cover is sorted. Highly recommended!"
+          </p>
+          <div class="flex items-center">
+            <span class="font-bold text-blue-900">— Mpho N., SAPS Officer</span>
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg shadow-md p-6 flex flex-col relative hover:shadow-xl transition duration-300">
+          <div class="absolute -top-4 -left-2 text-4xl text-yellow-500 opacity-50">
+            <i class="fas fa-quote-left"></i>
+          </div>
+          <p class="text-gray-700 mb-4 text-lg">
+            "Professional, efficient, and understand my needs as a nurse and a mother. They respected my culture and future dreams!"
+          </p>
+          <div class="flex items-center">
+            <span class="font-bold text-blue-900">— Lindiwe M., KZN Health</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">Frequently Asked Questions</h2>
+      <div class="max-w-4xl mx-auto space-y-6" id="faq-accordion">
+        <!-- FAQ Item -->
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-100">
+          <button class="flex justify-between items-center w-full p-5 text-left font-semibold text-blue-900 hover:bg-gray-100 transition" onclick="toggleFaq(this)">
+            <span>How do your services complement my occupational benefits?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="hidden p-5 bg-white border-t">
+            <p class="text-gray-700">
+              We identify gaps left by your standard employment benefits—such as additional life cover, enhanced disability protection, specialized education funding, and holistic retirement planning—to ensure your family is never left unprotected.
+            </p>
+          </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-100">
+          <button class="flex justify-between items-center w-full p-5 text-left font-semibold text-blue-900 hover:bg-gray-100 transition" onclick="toggleFaq(this)">
+            <span>Is your advice specific to government employees?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="hidden p-5 bg-white border-t">
+            <p class="text-gray-700">
+              Yes! We have in-depth knowledge of public service compensation and benefit structures, as well as the unique challenges faced by public servants.
+            </p>
+          </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-100">
+          <button class="flex justify-between items-center w-full p-5 text-left font-semibold text-blue-900 hover:bg-gray-100 transition" onclick="toggleFaq(this)">
+            <span>How do I get started?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="hidden p-5 bg-white border-t">
+            <p class="text-gray-700">
+              Request a free consultation below. Our advisors will review your existing benefits, explain your options, and map out a simple, tailored strategy for you.
+            </p>
+          </div>
+        </div>
+        <!-- FAQ Item -->
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden border border-gray-100">
+          <button class="flex justify-between items-center w-full p-5 text-left font-semibold text-blue-900 hover:bg-gray-100 transition" onclick="toggleFaq(this)">
+            <span>Are consultations confidential and non-obligatory?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="hidden p-5 bg-white border-t">
+            <p class="text-gray-700">
+              Absolutely. All consultations are confidential. There’s no obligation—just professional guidance, tailored to your needs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function toggleFaq(el) {
+        const answer = el.nextElementSibling;
+        answer.classList.toggle('hidden');
+        const icon = el.querySelector('i');
+        icon.classList.toggle('rotate-180');
+      }
+    </script>
+  </section>
+
+  <!-- Contact/Consultation Form Section -->
+  <section id="contact" class="py-16 bg-gradient-to-br from-blue-100 to-yellow-50">
+    <div class="container mx-auto px-4 max-w-2xl">
+      <div class="bg-white rounded-lg shadow-lg p-8 border border-yellow-100">
+        <h2 class="text-3xl font-bold text-blue-900 mb-4">Book Your Free Consultation</h2>
+        <p class="text-gray-700 mb-6">
+          Take the first step toward a secure, prosperous legacy for you and your loved ones. Submit your request below, and one of our friendly advisors will reach out to you soon.
+        </p>
+        <form action="mailto:info@legacywealthplanners.co.za" method="POST" enctype="text/plain" class="space-y-6" autocomplete="off">
+          <div class="mb-4">
+            <label for="name" class="block text-gray-700 mb-2 font-semibold">
+              Full Name <span class="text-red-500" aria-hidden="true">*</span>
+              <span class="sr-only">(required)</span>
+            </label>
+            <input 
+              id="name" 
+              name="name" 
+              type="text" 
+              placeholder="e.g., John Doe" 
+              aria-required="true"
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+              required>
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-gray-700 mb-2 font-semibold">
+              Email <span class="text-red-500" aria-hidden="true">*</span>
+              <span class="sr-only">(required)</span>
+            </label>
+            <input 
+              id="email" 
+              name="email" 
+              type="email" 
+              placeholder="e.g., you@example.com" 
+              aria-required="true"
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              required>
+          </div>
+          <div class="mb-4">
+            <label for="occupation" class="block text-gray-700 mb-2 font-semibold">Occupation</label>
+            <input 
+              id="occupation"
+              name="occupation"
+              type="text"
+              placeholder="e.g., Teacher, SAPS Officer"
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500">
+          </div>
+          <div class="mb-4">
+            <label for="message" class="block text-gray-700 mb-2 font-semibold">How can we help?</label>
+            <textarea 
+              id="message" 
+              name="message" 
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              placeholder="Briefly describe your current situation or goals."></textarea>
+          </div>
+          <button 
+            type="submit" 
+            class="bg-yellow-600 hover:bg-yellow-700 text-white px-10 py-3 rounded font-bold text-lg transition w-full shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2">
+            <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
+            Submit Consultation Request
+          </button>
+        </form>
+        <p class="text-xs text-gray-500 mt-3 text-center">Your information is confidential and secure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-8">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row md:justify-between items-center md:space-x-6">
+      <div class="flex items-center space-x-2 mb-4 md:mb-0">
+        <img src="https://legacywealthplanners.co.za/images/logo.png" alt="Logo" width="36" height="36" class="h-9 w-9 rounded-full border-2 border-yellow-600">
+        <span class="font-bold text-lg">Legacy Wealth Planners</span>
+      </div>
+      <div class="flex items-center space-x-6 text-sm">
+        <span><i class="fas fa-phone-alt text-yellow-500 mr-1"></i> +27 11 123 4567</span>
+        <span><i class="fas fa-envelope text-yellow-500 mr-1"></i> info@legacywealthplanners.co.za</span>
+        <span><i class="fas fa-map-marker-alt text-yellow-500 mr-1"></i> Sandton, Johannesburg</span>
+      </div>
+      <div class="flex space-x-4 mt-4 md:mt-0">
+        <a href="https://facebook.com/" class="hover:text-yellow-400" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://linkedin.com/" class="hover:text-yellow-400" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://twitter.com/" class="hover:text-yellow-400" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="text-center text-xs text-blue-200 mt-8">&copy; 2024 Legacy Wealth Planners. All Rights Reserved.</div>
+  </footer>
+
+  <!-- WhatsApp Fixed Button -->
+  <a href="https://wa.me/27823456789?text=I'm%20interested%20in%20financial%20planning%20services%20for%20public%20servants" 
+     class="fixed bottom-6 right-6 bg-green-500 text-white rounded-full p-3 shadow-lg hover:bg-green-600 transition z-50"
+     aria-label="Contact us on WhatsApp"
+     target="_blank"
+     rel="noopener noreferrer">
+    <i class="fab fa-whatsapp text-2xl"></i>
+  </a>
+
+  <!-- Navbar Hamburger Toggle JS -->
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      var mmenu = document.getElementById('mobile-menu');
+      if (mmenu.classList.contains('hidden')) {
+        mmenu.classList.remove('hidden');
+        this.setAttribute('aria-expanded', 'true');
+      } else {
+        mmenu.classList.add('hidden');
+        this.setAttribute('aria-expanded', 'false');
+      }
+    });
+    // Click outside mobile menu to close
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobile-menu');
+      const toggle = document.getElementById('menu-toggle');
+      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+        menu.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>
+

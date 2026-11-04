@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Financial Projection App - Firebase Version</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+            color: #334155; /* slate-700 */
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d5e6f3 100%); /* Lighter blue gradient */
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .summary-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* shadow-lg */
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500; /* font-medium */
+            color: #475569; /* slate-600 */
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem; /* p-3 */
+            border: 1px solid #cbd5e1; /* border-slate-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6; /* focus:border-blue-500 */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25); /* focus:ring-2 focus:ring-blue-200 */
+        }
+        
+        .input-field.error {
+            border-color: #ef4444; /* border-red-500 */
+        }
+
+        .error-message {
+            color: #ef4444; /* text-red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem; /* mt-1 */
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1rem; /* px-4 py-3 */
+            color: #475569; /* text-slate-600 */
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: #1e3a8a; /* hover:text-blue-800 */
+        }
+        .tab-btn.tab-active {
+            color: #1e40af; /* text-blue-700 */
+            border-color: #1e40af; /* border-blue-700 */
+            font-weight: 600; /* font-semibold */
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px; /* Adjusted for better responsiveness */
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .feedback-message {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.375rem; /* rounded-md */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(20px);
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        .feedback-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .feedback-message.success { background-color: #10b981; /* bg-green-500 */ }
+        .feedback-message.error { background-color: #ef4444; /* bg-red-500 */ }
+        .feedback-message.info { background-color: #3b82f6; /* bg-blue-500 */ }
+
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 220px;
+            background-color: #334155; /* bg-slate-700 */
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #334155 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .action-history {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8fafc; /* bg-slate-50 */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .action-history li {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e2e8f0; /* border-slate-200 */
+            font-size: 0.875rem;
+        }
+        .action-history li:last-child {
+            border-bottom: none;
+        }
+
+
+        /* Keyboard focus styles for accessibility */
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid #2563eb; /* focus:outline-blue-600 */
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.3); /* Tailwind focus ring style */
+        }
+        .tab-btn:focus-visible { /* Specific for tab buttons to avoid double outline */
+             box-shadow: 0 0 0 3px rgba(59,130,246,0.4);
+             outline: none;
+        }
+
+
+        /* Print optimization */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                color: black;
+            }
+
+            .app-container {
+                max-width: none;
+                padding: 1cm;
+                box-shadow: none;
+            }
+            header, .data-management, .action-history-container, .feedback-message, .hide-on-print, nav[role="tablist"] {
+                display: none !important;
+            }
+            .tab-content {
+                display: block !important; /* Show all tab content on print */
+                page-break-inside: avoid;
+                margin-bottom: 2rem;
+                box-shadow: none;
+                padding:0;
+            }
+            .summary-card, .bg-white {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            .chart-container {
+                height: 200px; /* Smaller charts for print */
+                margin-bottom: 1.5rem;
+                page-break-inside: avoid;
+            }
+            h1, h2, h3 {
+                color: #000 !important;
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+                 page-break-after: avoid;
+            }
+            canvas {
+                max-width: 100% !important;
+            }
+            .grid {
+                grid-template-columns: 1fr !important; /* Single column for print */
+            }
+        }
+
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100">
+    <div class="app-container">
+        <header class="mb-6">
+            <h1 class="text-4xl font-bold text-blue-800 text-center mb-2">Enhanced Financial Projection App</h1>
+            <p class="text-slate-600 text-center text-lg mb-4">Track, visualize, and project your finances with cloud persistence.</p>
+            <p class="text-slate-500 text-center text-sm mb-6">User ID: <span id="userIdDisplay">Loading...</span> | App ID: <span id="appIdDisplay">Loading...</span></p>
+            
+            <div id="feedbackMessage" class="feedback-message" role="alert" aria-live="polite"></div>
+            
+            <nav class="flex overflow-x-auto mb-6 border-b border-slate-300" role="tablist" aria-label="Financial dashboard navigation">
+                <button class="tab-btn tab-active" id="overview-tab" data-tab="overview" role="tab" aria-selected="true" aria-controls="overview-content">
+                    <i class="fas fa-chart-pie mr-2"></i>Overview
+                </button>
+                <button class="tab-btn" id="income-expenses-tab" data-tab="income-expenses" role="tab" aria-selected="false" aria-controls="income-expenses-content">
+                    <i class="fas fa-money-bill-wave mr-2"></i>Income & Expenses
+                </button>
+                <button class="tab-btn" id="assets-liabilities-tab" data-tab="assets-liabilities" role="tab" aria-selected="false" aria-controls="assets-liabilities-content">
+                    <i class="fas fa-balance-scale mr-2"></i>Assets & Liabilities
+                </button>
+                <button class="tab-btn" id="bank-statement-tab" data-tab="bank-statement" role="tab" aria-selected="false" aria-controls="bank-statement-content">
+                    <i class="fas fa-receipt mr-2"></i>Bank Statement
+                </button>
+                <button class="tab-btn" id="projections-tab" data-tab="projections" role="tab" aria-selected="false" aria-controls="projections-content">
+                    <i class="fas fa-chart-line mr-2"></i>Projections
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <section id="overview-content" class="tab-content active" role="tabpanel" aria-labelledby="overview-tab">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="summary-card bg-white p-6">
+                        <h2 class="text-xl font-semibold text-blue-800 mb-4">
+                            Current Net Worth
+                            <span class="tooltip ml-1">
+                                <i class="fas fa-info-circle text-blue-500"></i>
+                                <span class="tooltip-text">Total assets minus total liabilities. This is a snapshot of your financial health.</span>
+                            </span>
+                        </h2>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold text-slate-800" id="netWorthValue">R0.00</span>
+                            <span id="netWorthChange" class="text-sm font-medium text-green-600">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span id="netWorthChangeValue">0.00%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-slate-600 mb-1">
+                                <span>Total Assets</span>
+                                <span id="totalAssetsValue" class="font-medium text-slate-700">R0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-slate-600">
+                                <span>Total Liabilities</span>
+                                <span id="totalLiabilitiesValue" class="font-medium text-slate-700">R0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card bg-white p-6">
+                        <h2 class="text-xl font-semibold text-blue-800 mb-4">
+                            Monthly Cash Flow
+                             <span class="tooltip ml-1">
+                                <i class="fas fa-info-circle text-blue-500"></i>
+                                <span class="tooltip-text">Monthly income minus monthly expenses. Positive cash flow means you're earning more than you spend.</span>
+                            </span>
+                        </h2>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold text-slate-800" id="cashFlowValue">R0.00</span>
+                             <span id="cashFlowChange" class="text-sm font-medium text-green-600">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span id="cashFlowChangeValue">0.00%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex justify-between text-sm text-slate-600 mb-1">
+                                <span>Monthly Income</span>
+                                <span id="monthlyIncomeValue" class="font-medium text-slate-700">R0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-slate-600">
+                                <span>Monthly Expenses</span>
+                                <span id="monthlyExpensesValue" class="font-medium text-slate-700">R0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8 bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-semibold text-blue-800 mb-4">Financial Ratios</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-md">
+                            <h3 class="text-md font-medium text-slate-700 mb-1">
+                                Debt to Income Ratio
+                                <span class="tooltip ml-1">
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                    <span class="tooltip-text">Monthly debt payments divided by monthly gross income. Lenders prefer DTI below 36-43%.</span>
+                                </span>
+                            </h3>
+                            <div class="flex items-center">
+                                <div class="w-full bg-slate-200 rounded-full h-2.5 mr-2">
+                                    <div id="debtToIncomeRatioBar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span id="debtToIncomeRatioValue" class="text-sm font-semibold text-slate-700">0%</span>
+                            </div>
+                            <div id="debtToIncomeRatioStatus" class="mt-1 text-sm font-medium text-green-600">Healthy</div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-md">
+                             <h3 class="text-md font-medium text-slate-700 mb-1">
+                                Savings Rate
+                                <span class="tooltip ml-1">
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                    <span class="tooltip-text">Percentage of net income saved each month. Aim for at least 15-20%.</span>
+                                </span>
+                            </h3>
+                            <div class="flex items-center">
+                                <div class="w-full bg-slate-200 rounded-full h-2.5 mr-2">
+                                    <div id="savingsRateBar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span id="savingsRateValue" class="text-sm font-semibold text-slate-700">0%</span>
+                            </div>
+                             <div id="savingsRateStatus" class="mt-1 text-sm font-medium text-slate-600">Not enough data</div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-md">
+                            <h3 class="text-md font-medium text-slate-700 mb-1">
+                                Emergency Fund
+                                 <span class="tooltip ml-1">
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                    <span class="tooltip-text">How many months your liquid assets (e.g., savings) could cover your essential monthly expenses. Aim for 3-6 months.</span>
+                                </span>
+                            </h3>
+                            <div class="flex items-center">
+                                <div class="w-full bg-slate-200 rounded-full h-2.5 mr-2">
+                                    <div id="emergencyFundBar" class="bg-yellow-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span id="emergencyFundValue" class="text-sm font-semibold text-slate-700">0 months</span>
+                            </div>
+                            <div id="emergencyFundStatus" class="mt-1 text-sm font-medium text-slate-600">Not enough data</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold text-blue-800 mb-4">Assets vs Liabilities</h2>
+                        <div class="chart-container">
+                            <canvas id="assetLiabilityChart" aria-label="Assets versus liabilities bar chart" role="img"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold text-blue-800 mb-4">Income vs Expenses (Monthly)</h2>
+                        <div class="chart-container">
+                            <canvas id="incomeExpenseChart" aria-label="Income versus expenses bar chart" role="img"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow mb-8">
+                    <h2 class="text-xl font-semibold text-blue-800 mb-4">Net Worth Trend (Last 12 Months)</h2>
+                    <div class="chart-container" style="height:350px;">
+                        <canvas id="netWorthHistoryChart" aria-label="Net worth trend over the last 12 months" role="img"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="income-expenses-content" class="tab-content" role="tabpanel" aria-labelledby="income-expenses-tab">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow mb-8">
+                        <h2 class="text-2xl font-semibold text-blue-800 mb-6">Monthly Income</h2>
+                        <div class="chart-container mb-6">
+                            <canvas id="incomeHistoryChart" aria-label="Income history over the last 6 months" role="img"></canvas>
+                        </div>
+                         <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-green-50 p-3 rounded-md text-center">
+                                <p class="text-sm text-slate-600">Average</p>
+                                <p id="averageIncome" class="font-bold text-lg text-green-700">R0.00</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-md text-center">
+                                <p class="text-sm text-slate-600">Highest</p>
+                                <p id="highestIncome" class="font-bold text-lg text-blue-700">R0.00</p>
+                            </div>
+                            <div class="bg-yellow-50 p-3 rounded-md text-center">
+                                <p class="text-sm text-slate-600">Lowest</p>
+                                <p id="lowestIncome" class="font-bold text-lg text-yellow-700">R0.00</p>
+                            </div>
+                        </div>
+                        <form id="incomeForm" class="mb-4">
+                            <div class="flex flex-col md:flex-row md:items-end gap-4">
+                                <div class="flex-grow input-group">
+                                    <label for="currentIncome" class="block text-sm font-medium text-slate-700 mb-1">Current Monthly Net Income (R)</label>
+                                    <div class="relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 sm:text-sm">R</span>
+                                        </div>
+                                        <input type="number" id="currentIncome" name="currentIncome" class="input-field pl-8 pr-12" placeholder="0.00" min="0" step="0.01" aria-describedby="income-error-message" required>
+                                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 sm:text-sm">ZAR</span>
+                                        </div>
+                                    </div>
+                                    <p id="income-error-message" class="error-message hidden mt-1">Please enter a valid positive amount.</p>
+                                </div>
+                                <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                    <i class="fas fa-save mr-2"></i>Update Income
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow mb-8">
+                        <h2 class="text-2xl font-semibold text-blue-800 mb-6">Monthly Expenses</h2>
+                        <div class="chart-container mb-6">
+                            <canvas id="expenseCategoryChart" aria-label="Breakdown of expense categories" role="img"></canvas>
+                        </div>
+                        <form id="expenseForm">
+                            <div id="expenseFieldsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 mb-4">
+                                </div>
+                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                <div class="input-group sm:col-span-1">
+                                    <label for="customCategoryName" class="text-sm">Custom Category Name</label>
+                                    <input type="text" id="customCategoryName" class="input-field" placeholder="e.g., Subscriptions">
+                                </div>
+                                <div class="input-group sm:col-span-1">
+                                    <label for="customCategoryAmount" class="text-sm">Amount (R)</label>
+                                     <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">R</span>
+                                        <input type="number" id="customCategoryAmount" class="input-field pl-8" placeholder="0.00" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <button type="button" id="addCustomExpenseCategory" class="sm:col-span-1 self-end px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors h-11">
+                                    <i class="fas fa-plus mr-2"></i>Add Category
+                                </button>
+                            </div>
+
+                            <div class="flex justify-between items-center mb-6 mt-6">
+                                <span class="text-lg font-semibold text-slate-700">Total Monthly Expenses:</span>
+                                <span id="totalExpensesAmount" class="text-xl font-bold text-red-600">R0.00</span>
+                            </div>
+                            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                <i class="fas fa-save mr-2"></i>Update All Expenses
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="assets-liabilities-content" class="tab-content" role="tabpanel" aria-labelledby="assets-liabilities-tab">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow mb-8">
+                        <h2 class="text-2xl font-semibold text-blue-800 mb-6">Assets</h2>
+                        <div class="chart-container mb-6">
+                            <canvas id="assetAllocationChart" aria-label="Distribution of assets by category" role="img"></canvas>
+                        </div>
+                        <form id="assetForm" class="mb-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end mb-4">
+                                <div class="input-group">
+                                    <label for="assetName">Asset Name</label>
+                                    <input type="text" id="assetName" class="input-field" placeholder="e.g., Savings Account" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="assetValue">Value (R)</label>
+                                     <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">R</span>
+                                        <input type="number" id="assetValue" class="input-field pl-8" placeholder="0.00" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                                 <div class="input-group">
+                                    <label for="assetType">Type</label>
+                                    <select id="assetType" class="input-field">
+                                        <option value="cash">Cash/Savings</option>
+                                        <option value="investments">Investments</option>
+                                        <option value="property">Property</option>
+                                        <option value="vehicle">Vehicle</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                             <button type="submit" class="w-full sm:w-auto px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"><i class="fas fa-plus mr-2"></i>Add Asset</button>
+                        </form>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Value</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Type</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate

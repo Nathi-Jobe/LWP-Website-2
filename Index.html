@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Wealth Planners - Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'legacy-navy': '#0A2342', // Example Navy Blue
+                        'legacy-gold': '#B8860B', // Example Dark Gold
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Set Inter as default sans-serif
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Style for fixed header */
+        body {
+            padding-top: 64px; /* Adjust based on header height */
+        }
+        /* Basic dropdown functionality simulation (requires JS for real toggle) */
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+        /* Simple parallax effect for hero */
+        .hero-bg {
+            background-image: url('https://placehold.co/1920x800/0A2342/FFFFFF?text=Inspiring+South+African+Scene');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+
+    <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 h-16">
+        <nav class="container mx-auto px-4 h-full flex justify-between items-center">
+            <a href="#" class="text-legacy-navy font-bold text-xl">Legacy Wealth Planners</a>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#about" class="text-gray-700 hover:text-legacy-gold transition duration-300">About Us</a>
+                <div class="relative group">
+                    <button class="text-gray-700 hover:text-legacy-gold transition duration-300 flex items-center">
+                        Services
+                        <svg class="w-4 h-4 ml-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block z-50">
+                        <a href="#estate" class="block px-4 py-2 text-sm text-gray-700 hover:bg-legacy-navy hover:text-white">Estate Planning</a>
+                        <a href="#risk" class="block px-4 py-2 text-sm text-gray-700 hover:bg-legacy-navy hover:text-white">Risk Planning</a>
+                        <a href="#investment" class="block px-4 py-2 text-sm text-gray-700 hover:bg-legacy-navy hover:text-white">Investment Planning</a>
+                        <a href="#retirement" class="block px-4 py-2 text-sm text-gray-700 hover:bg-legacy-navy hover:text-white">Retirement Planning</a>
+                    </div>
+                </div>
+                <a href="#resources" class="text-gray-700 hover:text-legacy-gold transition duration-300">Resources</a>
+                <a href="#contact" class="text-gray-700 hover:text-legacy-gold transition duration-300">Contact Us</a>
+                <a href="#login" class="bg-legacy-gold text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-300 text-sm">Client Login</a>
+            </div>
+
+            <div class="md:hidden">
+                <button class="text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        </header>
+
+    <section id="hero" class="hero-bg h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white relative">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative z-10 p-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">Plan. Protect. Prosper.</h1>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Empowering Your Financial Journey with Holistic Planning and Tailored Solutions.</p>
+            <a href="#services" class="bg-legacy-gold text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-yellow-600 transition duration-300">Explore Our Services</a>
+            <a href="#contact" class="ml-4 border border-white text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-white hover:text-legacy-navy transition duration-300">Request a Consultation</a>
+        </div>
+    </section>
+
+    <section id="highlights" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                    <div class="text-legacy-gold text-4xl mb-4">★</div>
+                    <h3 class="text-xl font-semibold text-legacy-navy mb-2">14+ Years of Expertise</h3>
+                    <p class="text-gray-600">Proven experience guiding clients towards financial success.</p>
+                </div>
+                <div class="p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                     <div class="text-legacy-gold text-4xl mb-4">✓</div>
+                    <h3 class="text-xl font-semibold text-legacy-navy mb-2">FSCA Registered & Licensed</h3>
+                    <p class="text-gray-600">Fully compliant and authorised financial services provider.</p>
+                </div>
+                <div class="p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                     <div class="text-legacy-gold text-4xl mb-4">⚮</div>
+                    <h3 class="text-xl font-semibold text-legacy-navy mb-2">Comprehensive Holistic Planning</h3>
+                    <p class="text-gray-600">Integrating all aspects of your financial life.</p>
+                </div>
+                <div class="p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                     <div class="text-legacy-gold text-4xl mb-4">☺</div>
+                    <h3 class="text-xl font-semibold text-legacy-navy mb-2">Client-Centric Approach</h3>
+                    <p class="text-gray-600">Your unique goals are our top priority.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-snippet" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-legacy-navy mb-4">Meet Nkosinathi Sithole</h2>
+            <p class="text-gray-700 max-w-3xl mx-auto mb-8">
+                Learn more about our founder's experience, credentials, and commitment to providing South Africans with holistic, goal-driven financial planning.
+            </p>
+            <a href="#about" class="bg-legacy-navy text-white px-6 py-3 rounded-md font-medium hover:bg-blue-800 transition duration-300">More About Us</a>
+        </div>
+    </section>
+
+    <section id="services-overview" class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-legacy-navy mb-8">Our Services</h2>
+            <p class="text-gray-700 max-w-3xl mx-auto mb-8">
+                From securing your family's future with estate and risk planning to growing your wealth through strategic investments and retirement preparation, we offer tailored solutions.
+            </p>
+            <a href="#services" class="bg-legacy-gold text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-yellow-600 transition duration-300">Discover Our Services</a>
+        </div>
+    </section>
+
+     <section id="cta" class="py-16 bg-legacy-navy text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Secure Your Financial Legacy?</h2>
+            <p class="text-lg mb-8">Start your journey toward financial independence today.</p>
+            <a href="#contact" class="bg-legacy-gold text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-yellow-600 transition duration-300">Book a Free Consultation</a>
+        </div>
+    </section>
+
+
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-3">Legacy Wealth Planners</h4>
+                    <p class="text-sm mb-1">FSCA Registered: [Your FSP Number]</p>
+                    <p class="text-sm mb-1">Phone: [Your Phone Number]</p>
+                    <p class="text-sm mb-1">Email: [Your Email Address]</p>
+                    <p class="text-sm">Address: [Your Physical Address, Kloof, KZN]</p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover:text-legacy-gold">About Us</a></li>
+                        <li><a href="#services" class="hover:text-legacy-gold">Services</a></li>
+                        <li><a href="#resources" class="hover:text-legacy-gold">Resources</a></li>
+                        <li><a href="#contact" class="hover:text-legacy-gold">Contact Us</a></li>
+                         <li><a href="#login" class="hover:text-legacy-gold">Client Login</a></li>
+                         <li><a href="#privacy" class="hover:text-legacy-gold">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-3">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-legacy-gold">
+                            <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-legacy-gold">
+                             <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.59-11.018-3.714v-2.155z"/></svg>
+                        </a>
+                        <a href="#" aria-label="TikTok" class="text-gray-400 hover:text-legacy-gold">
+                           <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-1.949V16.6a4.992 4.992 0 1 1-5-4.883V5.158a4.79 4.79 0 0 1 3.744-1.944c1.51 0 2.912.7 3.86 1.856a4.56 4.56 0 0 0 3.358-1.358V6.686z"/></svg>
+                        </a>
+                        </div>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 text-sm mt-8 pt-8 border-t border-gray-700">
+                &copy; <script>document.write(new Date().getFullYear())</script> Legacy Wealth Planners. All Rights Reserved. [Disclaimer about financial advice, if needed]
+            </div>
+        </div>
+    </footer>
+
+    </body>
+</html>

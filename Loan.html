@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Debt vs Investment — SA Consumer Planner</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --green-900:#0f3b2d;
+    --green-700:#1f5f47;
+    --green-500:#2f8f6a;
+    --green-300:#8fc3a8;
+    --green-100:#e4f1ea;
+    --cream:#faf6ef;
+    --sand:#f1ead9;
+    --ink:#1c1c1c;
+    --muted:#6b6b6b;
+    --danger:#b23b3b;
+    --warn:#b07a1b;
+    --ok:#2f8f6a;
+    --border:#d9cfb8;
+    --shadow:0 6px 24px rgba(15,59,45,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  a{color:var(--green-700)}
+  header{background:linear-gradient(135deg,var(--green-900),var(--green-700));
+    color:#fff;padding:28px 24px}
+  header h1{margin:0;font-size:26px;font-weight:600;letter-spacing:.2px}
+  header p{margin:6px 0 0;color:var(--green-100);font-size:14px;max-width:900px}
+  main{max-width:1280px;margin:0 auto;padding:24px}
+  .grid{display:grid;gap:20px}
+  .grid-2{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--border);border-radius:14px;
+    padding:20px;box-shadow:var(--shadow)}
+  .card h2{margin:0 0 12px;font-size:17px;color:var(--green-900);
+    border-bottom:1px solid var(--green-100);padding-bottom:8px}
+  .card h3{margin:14px 0 6px;font-size:14px;color:var(--green-700);
+    text-transform:uppercase;letter-spacing:.5px}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  input,select{width:100%;padding:9px 10px;border:1px solid var(--border);
+    border-radius:8px;background:#fff;font-size:14px;color:var(--ink)}
+  input:focus,select:focus{outline:2px solid var(--green-500);outline-offset:1px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:600px){.row{grid-template-columns:1fr}}
+  .hint{font-size:12px;color:var(--muted);margin-top:2px}
+  .btn{background:var(--green-700);color:#fff;border:none;padding:12px 22px;
+    border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;
+    transition:background .15s}
+  .btn:hover{background:var(--green-900)}
+  .btn.secondary{background:#fff;color:var(--green-700);border:1px solid var(--green-700)}
+  .btn.secondary:hover{background:var(--green-100)}
+  .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .metric{background:var(--green-100);border-radius:10px;padding:14px}
+  .metric .label{font-size:12px;color:var(--green-700);text-transform:uppercase;letter-spacing:.5px}
+  .metric .value{font-size:22px;font-weight:700;color:var(--green-900);margin-top:4px}
+  .metric .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+  th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  th{background:var(--sand);color:var(--green-900);font-weight:600}
+  tr:hover td{background:#fdfaf2}
+  .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;
+    font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  .tag.a{background:#e4f1ea;color:var(--green-700)}
+  .tag.b{background:#fff3d9;color:#8a5a00}
+  .tag.c{background:#fde4e4;color:#8a1f1f}
+  .alert{padding:12px 14px;border-radius:10px;margin:10px 0;font-size:13px}
+  .alert.warn{background:#fff3d9;border-left:4px solid var(--warn);color:#5a3e00}
+  .alert.danger{background:#fde4e4;border-left:4px solid var(--danger);color:#6a1414}
+  .alert.info{background:var(--green-100);border-left:4px solid var(--green-500);color:var(--green-900)}
+  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .tab{padding:8px 14px;border:1px solid var(--border);border-radius:8px;
+    background:#fff;cursor:pointer;font-size:13px;color:var(--muted)}
+  .tab.active{background:var(--green-700);color:#fff;border-color:var(--green-700)}
+  .chart-wrap{position:relative;height:360px}
+  details{background:#fff;border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;margin:10px 0}
+  details summary{cursor:pointer;font-weight:600;color:var(--green-900)}
+  details[open] summary{margin-bottom:8px}
+  .test-grid{display:grid;gap:12px}
+  .test{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fffdf7}
+  .test .title{font-weight:600;color:var(--green-900);margin-bottom:6px}
+  .pass{color:var(--ok);font-weight:600}
+  .fail{color:var(--danger);font-weight:600}
+  footer{margin:40px 0 20px;text-align:center;color:var(--muted);font-size:12px}
+  .strategy-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .strategy-header h3{margin:0;text-transform:none;letter-spacing:0;font-size:16px;color:var(--green-900)}
+  .legend{font-size:12px;color:var(--muted);margin-bottom:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Debt vs Investment — SA Consumer Planner</h1>
+  <p>Compare the financial consequences of continuing to invest while repaying expensive debt, accelerating debt repayment, or prioritising debt settlement first. Built for South African consumers under the National Credit Act framework.</p>
+</header>
+
+<main>
+  <div class="grid grid-2">
+    <!-- LOAN INPUTS -->
+    <section class="card">
+      <h2>Loan Information</h2>
+      <div class="row">
+        <div>
+          <label>Outstanding principal (R)</label>
+          <input id="loan_principal" type="number" value="100000" min="0" step="100" />
+        </div>
+        <div>
+          <label>Annual interest rate (%)</label>
+          <input id="loan_rate" type="number" value="23" min="0" max="60" step="0.1" />
+          <div class="hint">Nominal annual rate. NCA caps vary by credit category.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Months remaining (exact)</label>
+          <input id="loan_months" type="number" value="29" min="1" max="480" step="1" />
+        </div>
+        <div>
+          <label>Monthly contractual instalment (R)</label>
+          <input id="loan_instalment" type="number" value="4550" min="0" step="10" />
+          <div class="hint">Leave blank to auto-calculate from principal, rate and term.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Credit-life premium (R/month)</label>
+          <input id="cl_premium" type="number" value="180" min="0" step="1" />
+        </div>
+        <div>
+          <label>Premium calculation method</label>
+          <select id="cl_method">
+            <option value="fixed">Fixed monthly premium</option>
+            <option value="declining">Declining with balance (verified formula)</option>
+            <option value="unknown">Unknown / unverified</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Monthly admin fee incl. VAT (R)</label>
+          <input id="admin_fee" type="number" value="69" min="0" step="1" />
+          <div class="hint">NCR cap for many unsecured loans: R69 incl. VAT. Verify with your lender.</div>
+        </div>
+        <div>
+          <label>Other monthly fees (R)</label>
+          <input id="other_fees" type="number" value="0" min="0" step="1" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Instalment includes insurance/fees?</label>
+          <select id="instalment_includes">
+            <option value="no">No — paid separately</option>
+            <option value="yes">Yes — bundled in instalment</option>
+          </select>
+        </div>
+        <div>
+          <label>Additional monthly repayment (R)</label>
+          <input id="extra_repay" type="number" value="0" min="0" step="100" />
+        </div>
+      </div>
+      <label>Contractual notes on extra repayments / early settlement</label>
+      <input id="contract_notes" type="text" placeholder="e.g. no penalty, 2 extra payments p.a. allowed" />
+    </section>
+
+    <!-- INVESTMENT INPUTS -->
+    <section class="card">
+      <h2>Investment Information</h2>
+      <div class="row">
+        <div>
+          <label>Current investment value (R)</label>
+          <input id="inv_current" type="number" value="50000" min="0" step="100" />
+        </div>
+        <div>
+          <label>Monthly contribution (R)</label>
+          <input id="inv_contrib" type="number" value="1000" min="0" step="100" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Assumed annual return (%)</label>
+          <input id="inv_return" type="number" value="10" min="0" max="40" step="0.1" />
+          <div class="hint">Nominal annual, before fees and tax.</div>
+        </div>
+        <div>
+          <label>Annual investment fees (%)</label>
+          <input id="inv_fees" type="number" value="1.5" min="0" max="10" step="0.1" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Effective annual tax on returns (%)</label>
+          <input id="inv_tax" type="number" value="0" min="0" max="45" step="0.5" />
+          <div class="hint">Leave 0 if unknown. Tax treatment depends on vehicle (TFSA, RA, endowment, etc.).</div>
+        </div>
+        <div>
+          <label>Contribution timing</label>
+          <select id="inv_timing">
+            <option value="end">End of month</option>
+            <option value="start">Start of month</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Emergency cash reserve (R)</label>
+          <input id="emergency" type="number" value="20000" min="0" step="1000" />
+          <div class="hint">Excluded from investment growth. Liquidity buffer.</div>
+        </div>
+        <div>
+          <label>Projection horizon (months)</label>
+          <input id="horizon" type="number" value="60" min="1" max="480" step="1" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="runAll()">Calculate & Compare</button>
+        <button class="btn secondary" onclick="runTests()">Run Validation Tests</button>
+        <button class="btn secondary" onclick="resetDefaults()">Reset</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- RESULTS -->
+  <section class="card" style="margin-top:20px">
+    <h2>Strategy Comparison</h2>
+    <div class="legend">
+      <span class="tag a">A — Status Quo</span> continue scheduled loan repayments and regular investing.
+      <span class="tag b">B — Accelerate</span> make extra loan repayments while keeping investment contributions.
+      <span class="tag c">C — Prioritise Debt</span> redirect investment contributions to the loan; invest freed cash flow after settlement.
+    </div>
+    <div id="alerts"></div>
+    <div class="grid grid-3" id="metrics"></div>
+    <div class="grid grid-3" id="cost_breakdown" style="margin-top:16px"></div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="card" style="margin-top:20px">
+    <h2>Interactive Charts</h2>
+    <div class="tabs">
+      <div class="tab active" onclick="showChart('debt',this)">Debt vs Investment</div>
+      <div class="tab" onclick="showChart('net',this)">Net Financial Position</div>
+      <div class="tab" onclick="showChart('costs',this)">Cumulative Loan Costs</div>
+    </div>
+    <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+  </section>
+
+  <!-- MONTHLY TABLE -->
+  <section class="card" style="margin-top:20px">
+    <h2>Monthly Checkpoints</h2>
+    <div class="tabs" id="tableTabs"></div>
+    <div id="monthlyTable"></div>
+  </section>
+
+  <!-- METHODOLOGY -->
+  <section class="card" style="margin-top:20px">
+    <h2>Formulas & Assumptions</h2>
+    <details open>
+      <summary>Amortisation engine</summary>
+      <p>For each month <em>m</em>:</p>
+      <ul>
+        <li>Monthly rate <code>r = annual_rate / 12</code></li>
+        <li>Interest<sub>m</sub> = opening_balance × r</li>
+        <li>Closing balance = opening + interest + capitalised fees − principal repaid</li>
+        <li>If instalment &lt; interest, negative amortisation is flagged (loan never settles at that payment level).</li>
+        <li>Final payment is truncated so balance never goes negative; no interest or fees are charged after settlement.</li>
+        <li>Credit-life premium follows the user-selected rule: fixed, verified declining (proportional to balance), or unknown (held constant but flagged unverified).</li>
+        <li>Admin fee is charged only for months in which the loan is outstanding at month-start.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Investment growth</summary>
+      <p>Monthly net rate <code>i = (annual_return − annual_fees − annual_tax) / 12</code> applied to opening balance; contribution added at start or end of month per user selection.</p>
+      <p>Compound formula: <code>FV = PV·(1+i)ⁿ + C·[((1+i)ⁿ − 1)/i]</code> (end-of-month) or with an extra <code>(1+i)</code> factor for start-of-month.</p>
+    </details>
+    <details>
+      <summary>Net financial position</summary>
+      <p><code>Net = Investment assets + Emergency reserve − Outstanding loan balance</code>. Excludes property, vehicles, retirement annuities (illiquid), and any liabilities not entered.</p>
+    </details>
+    <details>
+      <summary>Strategy cash flows</summary>
+      <ul>
+        <li><strong>A</strong>: scheduled instalment (+ any user-entered extra repayment) + normal investment contribution every month.</li>
+        <li><strong>B</strong>: same as A but extra repayment is always applied (A uses it only if entered).</li>
+        <li><strong>C</strong>: investment contribution + extra repayment redirected to loan until settlement; afterwards the combined freed cash flow is invested monthly.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Key caveats</summary>
+      <ul>
+        <li>Loan interest rate ≠ investment return: they differ in tax treatment, fees, liquidity, risk and compounding conventions.</li>
+        <li>Projections are not guarantees. Investment returns are assumed constant; real markets are volatile.</li>
+        <li>Early settlement quotations from the lender always override this model.</li>
+        <li>Credit-life cover ceases on settlement (subject to policy terms); no refund of past premiums is assumed.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- TESTS -->
+  <section class="card" style="margin-top:20px">
+    <h2>Independent Validation Tests</h2>
+    <div class="test-grid" id="testResults">
+      <div class="hint">Click "Run Validation Tests" above to execute the 10-case suite.</div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section class="card" style="margin-top:20px">
+    <h2>South African References</h2>
+    <ul>
+      <li><strong>National Credit Act 34 of 2005</strong> — particularly s.105 (interest and fees), s.106 (credit life insurance) and the general affordability / disclosure framework.</li>
+      <li><strong>Credit Life Insurance Rules, 2017</strong> (published under the NCA) — governs permissible credit-life cover types, maximum cover amounts, premium limits and the requirement that cover cease on full settlement (subject to policy terms).</li>
+      <li><strong>National Credit Regulations</strong> — Reg.43–45 set maximum initiation and monthly service fees. The commonly cited monthly service fee cap for unsecured credit is R69 including VAT (15%); this is a cap, not a universal charge, and differs by credit category.</li>
+      <li><strong>Income Tax Act</strong> — interest exemptions (s.10(1)(i)), retirement fund tax treatment, TFSA exemptions, endowment tax regimes. Tax assumptions in this tool are simplifications.</li>
+    </ul>
+    <div class="alert info">Lender-specific premium formulas, early-settlement quotation conventions and fee schedules vary. Always confirm with your credit provider and a registered financial services provider before acting.</div>
+  </section>
+
+  <footer>
+    Educational tool — not financial advice. Verify all figures with your credit provider and a registered FSP.
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   CALCULATION ENGINE
+   ============================================================ */
+const ZAR = v => (isFinite(v) ? 'R' + Math.round(v).toLocaleString('en-ZA') : '—');
+const ZAR2 = v => (isFinite(v) ? 'R' + v.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—');
+const PCT = v => (isFinite(v) ? (v*100).toFixed(2)+'%' : '—');
+
+/**
+ * Build a month-by-month amortisation schedule.
+ * @param {Object} opts
+ *   principal, annualRate, months, instalment,
+ *   clPremium, clMethod ('fixed'|'declining'|'unknown'),
+ *   adminFee, otherFees, extraPerMonth,
+ *   instalmentIncludes (bool), horizon
+ * @returns {Object} schedule, totals, flags
+ */
+function amortise(opts){
+  const {principal, annualRate, months, instalment,
+         clPremium, clMethod, adminFee, otherFees, extraPerMonth,
+         instalmentIncludes, horizon} = opts;
+  const r = annualRate/100/12;
+  let bal = principal;
+  const schedule = [];
+  let totInterest=0, totPrincipal=0, totCL=0, totAdmin=0, totOther=0, totCashOut=0;
+  let settledMonth = null;
+  let negativeAmort = false;
+  let insufficientPayment = false;
+
+  // Effective monthly payment toward principal+interest
+  // If instalmentIncludes: instalment covers everything; principal repayment = instalment - interest - fees
+  // Else: instalment is pure P+I, fees paid on top.
+  for(let m=1; m<=Math.max(months, horizon); m++){
+    if(bal<=0){
+      schedule.push({m, opening:0, interest:0, principal:0, closing:0,
+                     instalment:0, cl:0, admin:0, other:0, cashOut:0});
+      continue;
+    }
+    const opening = bal;
+    const interest = opening * r;
+
+    // Credit-life premium this month
+    let cl = 0;
+    if(clMethod==='fixed') cl = clPremium;
+    else if(clMethod==='declining') cl = clPremium * (opening/principal); // proportional to original
+    else cl = clPremium; // unknown — held constant but flagged
+
+    const admin = adminFee;
+    const other = otherFees;
+
+    // Determine payment toward principal+interest
+    let paymentPI = instalment;
+    if(instalmentIncludes){
+      // instalment covers P+I+CL+admin+other; principal portion is residual
+      paymentPI = Math.max(0, instalment - cl - admin - other);
+    }
+    // Add extra
+    const extra = (settledMonth===null ? extraPerMonth : 0);
+    const available = paymentPI + extra;
+
+    // Check affordability
+    if(available < interest && available>0){
+      negativeAmort = true;
+    }
+    if(available===0 && interest>0){
+      insufficientPayment = true;
+    }
+
+    // Apply payment
+    let princPaid = Math.min(opening, Math.max(0, available - interest));
+    const closing = Math.max(0, opening + interest - (available));
+    // If available > opening+interest, overpayment — truncate
+    const actualCash = Math.min(available, opening + interest);
+
+    bal = closing;
+    totInterest += interest;
+    totPrincipal += princPaid;
+    totCL += cl;
+    totAdmin += admin;
+    totOther += other;
+    const cashOut = actualCash + cl + admin + other + (instalmentIncludes?0:0); // cashOut is total money leaving pocket
+    // If instalmentIncludes: total cash out = instalment + extra (already inclusive)
+    // Else: instalment + extra + cl + admin + other
+    const totalCashThisMonth = instalmentIncludes
+      ? (instalment + extra)   // everything bundled
+      : (instalment + extra + cl + admin + other);
+    totCashOut += (settledMonth===null ? totalCashThisMonth : 0);
+
+    if(bal<=0 && settledMonth===null) settledMonth = m;
+
+    schedule.push({
+      m, opening, interest, principal:princPaid, closing,
+      instalment: instalmentIncludes ? instalment : instalment,
+      extra, cl, admin, other,
+      cashOut: settledMonth===null ? totalCashThisMonth : 0
+    });
+  }
+
+  return {
+    schedule,
+    settledMonth,
+    totals:{interest:totInterest, principal:totPrincipal, cl:totCL, admin:totAdmin, other:totOther, cashOut:totCashOut},
+    flags:{negativeAmort, insufficientPayment}
+  };
+}
+
+/**
+ * Investment growth schedule.
+ */
+function investGrow(opts){
+  const {start, monthlyContrib, annualReturn, annualFees, annualTax,
+         timing, horizon, contribOverride} = opts;
+  const i = (annualReturn - annualFees - annualTax)/100/12;
+  let bal = start;
+  const schedule = [];
+  let totalContrib = 0;
+  for(let m=1; m<=horizon; m++){
+    const contrib = (contribOverride && contribOverride[m-1]!==undefined) ? contribOverride[m-1] : monthlyContrib;
+    if(timing==='start') bal += contrib;
+    bal = bal * (1+i);
+    if(timing==='end') bal += contrib;
+    totalContrib += contrib;
+    schedule.push({m, balance:bal, contrib});
+  }
+  return {schedule, finalBalance:bal, totalContrib};
+}
+
+/**
+ * Run a single strategy.
+ */
+function runStrategy({loanOpts, invOpts, strategy, horizon}){
+  // Build loan options per strategy
+  const lo = {...loanOpts};
+  if(strategy==='A'){
+    lo.extraPerMonth = loanOpts.extraPerMonth; // as entered
+  } else if(strategy==='B'){
+    // Always apply extra if user entered it; if zero, same as A
+    lo.extraPerMonth = loanOpts.extraPerMonth;
+  } else if(strategy==='C'){
+    // Redirect investment contrib + extra to loan until settlement
+    lo.extraPerMonth = loanOpts.extraPerMonth + invOpts.monthlyContrib;
+  }
+  const loan = amortise({...lo, horizon});
+
+  // Investment schedule
+  const io = {...invOpts, horizon};
+  if(strategy==='C'){
+    // contribOverride: 0 until settlement, then (original contrib + extra) afterwards
+    const override = [];
+    for(let m=1; m<=horizon; m++){
+      if(loan.settledMonth && m>loan.settledMonth){
+        override[m-1] = invOpts.monthlyContrib + loanOpts.extraPerMonth;
+      } else {
+        override[m-1] = 0;
+      }
+    }
+    io.contribOverride = override;
+  }
+  const inv = investGrow(io);
+
+  // Build combined timeline
+  const timeline = [];
+  for(let m=0; m<=horizon; m++){
+    const ls = m===0 ? {closing:loanOpts.principal} : loan.schedule[m-1];
+    const is = m===0 ? {balance:invOpts.start} : inv.schedule[m-1];
+    const debt = ls.closing;
+    const assets = is.balance + (invOpts.emergency||0);
+    timeline.push({m, debt, assets, net: assets - debt});
+  }
+
+  return {loan, inv, timeline};
+}
+
+/* ============================================================
+   UI
+   ============================================================ */
+let charts = {};
+function getInputs(){
+  const v = id => parseFloat(document.getElementById(id).value)||0;
+  const s = id => document.getElementById(id).value;
+  const instalment = v('loan_instalment');
+  // Auto-calc instalment if blank
+  let inst = instalment;
+  if(!instalment){
+    const P = v('loan_principal'), r = v('loan_rate')/100/12, n = v('loan_months');
+    if(r===0) inst = P/n;
+    else inst = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
+  return {
+    loanOpts:{
+      principal: v('loan_principal'),
+      annualRate: v('loan_rate'),
+      months: v('loan_months'),
+      instalment: inst,
+      clPremium: v('cl_premium'),
+      clMethod: s('cl_method'),
+      adminFee: v('admin_fee'),
+      otherFees: v('other_fees'),
+      extraPerMonth: v('extra_repay'),
+      instalmentIncludes: s('instalment_includes')==='yes',
+      horizon: v('horizon')
+    },
+    invOpts:{
+      start: v('inv_current'),
+      monthlyContrib: v('inv_contrib'),
+      annualReturn: v('inv_return'),
+      annualFees: v('inv_fees'),
+      annualTax: v('inv_tax'),
+      timing: s('inv_timing'),
+      emergency: v('emergency'),
+      horizon: v('horizon')
+    },
+    horizon: v('horizon')
+  };
+}
+
+let lastResults = null;
+function runAll(){
+  const {loanOpts, invOpts, horizon} = getInputs();
+  const A = runStrategy({loanOpts, invOpts, strategy:'A', horizon});
+  const B = runStrategy({loanOpts, invOpts, strategy:'B', horizon});
+  const C = runStrategy({loanOpts, invOpts, strategy:'C', horizon});
+  lastResults = {A,B,C, loanOpts, invOpts, horizon};
+  renderAlerts(loanOpts);
+  renderMetrics(A,B,C,loanOpts,invOpts);
+  renderCostBreakdown(A,B,C,loanOpts);
+  renderChart('debt');
+  renderTableTabs();
+}
+
+function renderAlerts(lo){
+  const box = document.getElementById('alerts');
+  box.innerHTML = '';
+  const add = (cls,msg) => box.innerHTML += `<div class="alert ${cls}">${msg}</div>`;
+  if(lo.flags && lo.flags.negativeAmort) add('danger','Payment is insufficient to cover interest in at least one month — the loan would grow (negative amortisation).');
+  if(lo.annualRate > 28) add('warn','Interest rate exceeds 28% p.a. — verify this against your contract. NCA caps differ by credit category; rates this high are uncommon for regulated consumer credit.');
+  if(lo.clMethod==='unknown') add('warn','Credit-life premium structure is unknown — future premiums shown are unverified projections.');
+  if(lo.instalmentIncludes) add('info','Instalment is treated as all-inclusive. Principal portion is derived as residual after interest, credit-life, admin and other fees.');
+  if(lo.extraPerMonth>0) add('info','Extra repayments entered: '+ZAR(lo.extraPerMonth)+'/month. Confirm your contract allows these without penalty.');
+}
+
+function renderMetrics(A,B,C,lo,io){
+  const el = document.getElementById('metrics');
+  const mk = (tag,name,res) => {
+    const final = res.timeline[lo.horizon];
+    return `<div class="metric">
+      <div class="strategy-header"><span class="tag ${tag}">${tag.toUpperCase()}</span><h3>${name}</h3></div>
+      <div class="label">Investment at horizon</div><div class="value">${ZAR(final.assets - io.emergency)}</div>
+      <div class="label" style="margin-top:8px">Outstanding debt</div><div class="value">${ZAR(final.debt)}</div>
+      <div class="label" style="margin-top:8px">Net financial position</div><div class="value">${ZAR(final.net)}</div>
+      <div class="sub">Loan settled: ${res.loan.settledMonth ? 'month '+res.loan.settledMonth : 'not within horizon'}</div>
+    </div>`;
+  };
+  el.innerHTML = mk('a','Status Quo',A) + mk('b','Accelerate',B) + mk('c','Prioritise Debt',C);
+}
+
+function renderCostBreakdown(A,B,C,lo){
+  const el = document.getElementById('cost_breakdown');
+  const mk = (tag,name,res) => {
+    const t = res.loan.totals;
+    const financingCost = t.interest + t.cl + t.admin + t.other;
+    const orig = lo.principal;
+    return `<div class="metric" style="background:#fffdf7">
+      <div class="strategy-header"><span class="tag ${tag}">${tag.toUpperCase()}</span><h3>${name} — Costs</h3></div>
+      <div class="label">Principal repaid</div><div class="value">${ZAR(t.principal)}</div>
+      <div class="label" style="margin-top:6px">Interest</div><div class="sub">${ZAR(t.interest)} (${(t.interest/orig*100).toFixed(1)}% of original)</div>
+      <div class="label" style="margin-top:6px">Credit-life premiums</div><div class="sub">${ZAR(t.cl)} (${(t.cl/orig*100).toFixed(1)}%)</div>
+      <div class="label" style="margin-top:6px">Admin fees</div><div class="sub">${ZAR(t.admin)} (${(t.admin/orig*100).toFixed(1)}%)</div>
+      <div class="label" style="margin-top:6px">Other fees</div><div class="sub">${ZAR(t.other)}</div>
+      <div class="label" style="margin-top:6px">Total financing & insurance cost</div><div class="value" style="color:var(--danger)">${ZAR(financingCost)}</div>
+      <div class="sub">Total cash outflow (incl. principal): ${ZAR(t.cashOut)}</div>
+    </div>`;
+  };
+  el.innerHTML = mk('a','Status Quo',A) + mk('b','Accelerate',B) + mk('c','Prioritise Debt',C);
+}
+
+function renderChart(which){
+  const {A,B,C,horizon} = lastResults;
+  const labels = Array.from({length:horizon+1},(_,i)=>i);
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  if(charts.main) charts.main.destroy();
+  let cfg;
+  if(which==='debt'){
+    cfg = {
+      type:'line',
+      data:{labels, datasets:[
+        {label:'A — Debt', data:A.timeline.map(t=>t.debt), borderColor:'#2f8f6a', backgroundColor:'#2f8f6a22', tension:.2},
+        {label:'B — Debt', data:B.timeline.map(t=>t.debt), borderColor:'#b07a1b', backgroundColor:'#b07a1b22', tension:.2},
+        {label:'C — Debt', data:C.timeline.map(t=>t.debt), borderColor:'#b23b3b', backgroundColor:'#b23b3b22', tension:.2},
+        {label:'A — Investment', data:A.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#2f8f6a', borderDash:[5,5], tension:.2},
+        {label:'B — Investment', data:B.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#b07a1b', borderDash:[5,5], tension:.2},
+        {label:'C — Investment', data:C.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#b23b3b', borderDash:[5,5], tension:.2},
+      ]},
+      options:chartOpts('Rands')
+    };
+  } else if(which==='net'){
+    cfg = {
+      type:'line',
+      data:{labels, datasets:[
+        {label:'A — Net Position', data:A.timeline.map(t=>t.net), borderColor:'#2f8f6a', backgroundColor:'#2f8f6a33', fill:true, tension:.2},
+        {label:'B — Net Position', data:B.timeline.map(t=>t.net), borderColor:'#b07a1b', backgroundColor:'#b07a1b33', fill:true, tension:.2},
+        {label:'C — Net Position', data:C.timeline.map(t=>t.net), borderColor:'#b23b3b', backgroundColor:'#b23b3b33', fill:true, tension:.2},
+      ]},
+      options:chartOpts('Rands')
+    };
+  } else {
+    const cumCost = res => {
+      let cum=0; const arr=[0];
+      res.loan.schedule.forEach(s=>{cum += s.interest+s.cl+s.admin+s.other; arr.push(cum);});
+      return arr;
+    };
+    cfg = {
+      type:'line',
+      data:{labels, datasets:[
+        {label:'A — Cumulative financing cost', data:cumCost(A), borderColor:'#2f8f6a', tension:.2},
+        {label:'B — Cumulative financing cost', data:cumCost(B), borderColor:'#b07a1b', tension:.2},
+        {label:'C — Cumulative financing cost', data:cumCost(C), borderColor:'#b23b3b', tension:.2},
+      ]},
+      options:chartOpts('Rands')
+    };
+  }
+  charts.main = new Chart(ctx,cfg);
+}
+function chartOpts(yLabel){
+  return {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{position:'bottom', labels:{font:{size:11}}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+ZAR(c.parsed.y)}}
+    },
+    scales:{
+      x:{title:{display:true,text:'Month'}},
+      y:{title:{display:true,text:yLabel}, ticks:{callback:v=>'R'+v.toLocaleString('en-ZA')}}
+    }
+  };
+}
+function showChart(which,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderChart(which);
+}
+
+function renderTableTabs(){
+  const el = document.getElementById('tableTabs');
+  el.innerHTML = ['A','B','C'].map((t,i)=>
+    `<div class="tab ${i===0?'active':''}" onclick="showTable('${t}',this)">${t} — Schedule</div>`
+  ).join('');
+  showTable('A',el.firstChild);
+}
+function showTable(tag,el){
+  document.querySelectorAll('#tableTabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const res = lastResults[tag];
+  const checkpoints = new Set([1,6,12,24,36,lastResults.horizon]);
+  const rows = res.loan.schedule.filter(s=>checkpoints.has(s.m) || s.m===res.loan.settledMonth)
+    .map(s=>{
+      const inv = res.inv.schedule[s.m-1];
+      return `<tr>
+        <td>${s.m}</td>
+        <td>${ZAR(s.opening)}</td>
+        <td>${ZAR(s.interest)}</td>
+        <td>${ZAR(s.principal)}</td>
+        <td>${ZAR(s.closing)}</td>
+        <td>${ZAR(s.cl)}</td>
+        <td>${ZAR(s.admin)}</td>
+        <td>${ZAR(inv?inv.balance:0)}</td>
+        <td>${ZAR((inv?inv.balance:0)+lastResults.invOpts.emergency - s.closing)}</td>
+      </tr>`;
+    }).join('');
+  document.getElementById('monthlyTable').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Month</th><th>Opening bal</th><th>Interest</th><th>Principal</th>
+        <th>Closing bal</th><th>Credit-life</th><th>Admin fee</th>
+        <th>Investment</th><th>Net position</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function resetDefaults(){
+  document.getElementById('loan_principal').value=100000;
+  document.getElementById('loan_rate').value=23;
+  document.getElementById('loan_months').value=29;
+  document.getElementById('loan_instalment').value=4550;
+  document.getElementById('cl_premium').value=180;
+  document.getElementById('cl_method').value='fixed';
+  document.getElementById('admin_fee').value=69;
+  document.getElementById('other_fees').value=0;
+  document.getElementById('instalment_includes').value='no';
+  document.getElementById('extra_repay').value=0;
+  document.getElementById('inv_current').value=50000;
+  document.getElementById('inv_contrib').value=1000;
+  document.getElementById('inv_return').value=10;
+  document.getElementById('inv_fees').value=1.5;
+  document.getElementById('inv_tax').value=0;
+  document.getElementById('inv_timing').value='end';
+  document.getElementById('emergency').value=20000;
+  document.getElementById('horizon').value=60;
+  runAll();
+}
+
+/* ============================================================
+   VALIDATION TEST SUITE
+   ============================================================ */
+function runTests(){
+  const el = document.getElementById('testResults');
+  const tests = [];
+  const approx = (a,b,tol=1) => Math.abs(a-b)<=tol;
+
+  // 1. R50,000 declining-balance loan with verified declining credit-life
+  (function(){
+    const r = amortise({principal:50000, annualRate:20, months:24, instalment:2550,
+      clPremium:200, clMethod:'declining', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:24});
+    // Manual check: month 1 interest = 50000*0.20/12 = 833.33, principal = 2550-833.33 = 1716.67
+    const m1 = r.schedule[0];
+    const ok = approx(m1.interest, 833.33, 0.01) && approx(m1.principal, 1716.67, 0.01);
+    tests.push({title:'1. R50k declining-balance loan with declining credit-life',
+      expected:'Month 1 interest R833.33, principal R1,716.67; credit-life declines with balance',
+      actual:`M1 interest ${ZAR2(m1.interest)}, principal ${ZAR2(m1.principal)}, CL ${ZAR2(m1.cl)}`,
+      pass:ok});
+  })();
+
+  // 2. R100,000 loan with 29 months remaining
+  (function(){
+    const r = amortise({principal:100000, annualRate:23, months:29, instalment:4550,
+      clPremium:180, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:29});
+    // PMT check: r=0.23/12=0.0191667, n=29, PMT = 100000*0.0191667*1.0191667^29 / (1.0191667^29-1)
+    const rate=0.23/12, n=29;
+    const pmt = 100000*rate*Math.pow(1+rate,n)/(Math.pow(1+rate,n)-1);
+    const ok = approx(pmt, 4522, 10); // user entered 4550, close to required
+    tests.push({title:'2. R100k loan, 29 months',
+      expected:`Required PMT ≈ R4,522; user entered R4,550; loan should settle within horizon`,
+      actual:`Required PMT ${ZAR2(pmt)}, settled month: ${r.settledMonth}, total interest ${ZAR(r.totals.interest)}`,
+      pass:ok && r.settledMonth!==null});
+  })();
+
+  // 3. Early settlement via extra repayments
+  (function(){
+    const r = amortise({principal:100000, annualRate:23, months:29, instalment:4550,
+      clPremium:180, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:2000,
+      instalmentIncludes:false, horizon:60});
+    const ok = r.settledMonth!==null && r.settledMonth < 29;
+    tests.push({title:'3. Early settlement with R2,000 extra/month',
+      expected:'Settled before month 29',
+      actual:`Settled month ${r.settledMonth}, interest saved vs baseline`,
+      pass:ok});
+  })();
+
+  // 4. Instalment insufficient to amortise
+  (function(){
+    const r = amortise({principal:100000, annualRate:23, months:29, instalment:500,
+      clPremium:0, clMethod:'fixed', adminFee:0, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:29});
+    const ok = r.flags.negativeAmort || r.settledMonth===null;
+    tests.push({title:'4. Instalment insufficient (R500 on R100k @23%)',
+      expected:'Negative amortisation flagged, loan never settles',
+      actual:`negativeAmort=${r.flags.negativeAmort}, settledMonth=${r.settledMonth}, final balance ${ZAR(r.schedule[28].closing)}`,
+      pass:ok});
+  })();
+
+  // 5. Fixed premium that does not decline
+  (function(){
+    const r = amortise({principal:100000, annualRate:20, months:24, instalment:5200,
+      clPremium:200, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:24});
+    const allFixed = r.schedule.every(s=>s.cl===200 || s.closing===0);
+    tests.push({title:'5. Fixed credit-life premium (does not decline)',
+      expected:'Every month CL = R200 (until settlement)',
+      actual:`M1 CL ${ZAR(r.schedule[0].cl)}, M12 CL ${ZAR(r.schedule[11].cl)}`,
+      pass:allFixed});
+  })();
+
+  // 6. Zero investment contributions
+  (function(){
+    const inv = investGrow({start:50000, monthlyContrib:0, annualReturn:10, annualFees:1.5,
+      annualTax:0, timing:'end', horizon:60});
+    const expected = 50000*Math.pow(1+(10-1.5)/100/12, 60);
+    const ok = approx(inv.finalBalance, expected, 1);
+    tests.push({title:'6. Zero investment contributions',
+      expected:`FV ≈ ${ZAR(expected)}`,
+      actual:`FV = ${ZAR2(inv.finalBalance)}`,
+      pass:ok});
+  })();
+
+  // 7. Zero-interest loan
+  (function(){
+    const r = amortise({principal:60000, annualRate:0, months:12, instalment:5000,
+      clPremium:0, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:12});
+    const ok = r.totals.interest===0 && r.settledMonth===12;
+    tests.push({title:'7. Zero-interest loan (R60k over 12m)',
+      expected:'Zero interest, settled at month 12',
+      actual:`Interest ${ZAR(r.totals.interest)}, settled month ${r.settledMonth}`,
+      pass:ok});
+  })();
+
+  // 8. Debt settled before horizon end
+  (function(){
+    const r = amortise({principal:50000, annualRate:20, months:24, instalment:2600,
+      clPremium:100, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:1000,
+      instalmentIncludes:false, horizon:60});
+    const postSettle = r.schedule.slice(r.settledMonth).every(s=>s.interest===0 && s.admin===0 && s.cl===0);
+    tests.push({title:'8. Debt settled before horizon',
+      expected:'No interest/fees charged after settlement',
+      actual:`Settled month ${r.settledMonth}, post-settle fees zero: ${postSettle}`,
+      pass:postSettle});
+  })();
+
+  // 9. Fees included in instalment
+  (function(){
+    const r = amortise({principal:100000, annualRate:20, months:24, instalment:5500,
+      clPremium:200, clMethod:'fixed', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:true, horizon:24});
+    // Month 1: interest 1666.67, CL 200, admin 69 => principal = 5500-1666.67-200-69 = 3564.33
+    const m1 = r.schedule[0];
+    const expPrinc = 5500 - 50000*0.20/12 - 200 - 69; // wait principal is 100000
+    const expPrinc2 = 5500 - 100000*0.20/12 - 200 - 69;
+    const ok = approx(m1.principal, expPrinc2, 0.01);
+    tests.push({title:'9. Fees bundled in instalment',
+      expected:`Month 1 principal ≈ R${expPrinc2.toFixed(2)}`,
+      actual:`Principal ${ZAR2(m1.principal)}, interest ${ZAR2(m1.interest)}`,
+      pass:ok});
+  })();
+
+  // 10. Unknown credit-life pricing
+  (function(){
+    const r = amortise({principal:100000, annualRate:20, months:24, instalment:5200,
+      clPremium:200, clMethod:'unknown', adminFee:69, otherFees:0, extraPerMonth:0,
+      instalmentIncludes:false, horizon:24});
+    const allConst = r.schedule.every(s=>s.cl===200 || s.closing===0);
+    tests.push({title:'10. Unknown credit-life pricing',
+      expected:'Premium held constant; flagged as unverified in UI',
+      actual:`M1 CL ${ZAR(r.schedule[0].cl)}, M12 CL ${ZAR(r.schedule[11].cl)} (held constant)`,
+      pass:allConst});
+  })();
+
+  // Render
+  el.innerHTML = tests.map(t=>`
+    <div class="test">
+      <div class="title">${t.title}</div>
+      <div><strong>Expected:</strong> ${t.expected}</div>
+      <div><strong>Actual:</strong> ${t.actual}</div>
+      <div class="${t.pass?'pass':'fail'}">${t.pass?'✓ PASS':'✗ FAIL / REVIEW'}</div>
+    </div>
+  `).join('');
+}
+
+// Initial run
+window.addEventListener('load', runAll);
+</script>
+</body>
+</html>

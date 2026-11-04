@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"> {/* Added scroll-smooth for nicer anchor link transitions */}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Wealth Planners - Financial Solutions for Public Servants</title>
+  <meta name="description" content="Legacy Wealth Planners: Specialized financial planning for South African public servants. Secure your legacy with expert advice, tailored risk, estate, investment, and retirement planning.">
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .hero-bg {
+      /* Ensure you have the license to use this background image */
+      background-image: linear-gradient(rgba(10,35,66,0.8),rgba(10,35,66,0.8)), url('https://c8.alamy.com/comp/T7JYC5/johannesburg-skyline-aerial-view-over-the-central-business-district-cbd-from-the-carlton-tower-johannesburg-south-africa-T7JYC5.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* Optional: Creates a parallax effect */
+    }
+    /* Basic print styles */
+    @media print {
+      html, body { background: #fff !important; color: #111 !important; }
+      header, footer, .no-print { display: none !important; } /* Hide header/footer/specific sections when printing */
+      .shadow, .shadow-md, .shadow-lg, .fixed, .sticky, .hover\:shadow-md, .hover\:bg-yellow-600, .bg-cover { box-shadow: none !important; }
+      a { text-decoration: none; color: inherit; }
+      section { padding-top: 1rem !important; padding-bottom: 1rem !important; } /* Reduce print padding */
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <header class="w-full bg-white shadow-md fixed top-0 left-0 z-50 h-20 flex items-center"> {/* Increased z-index */}
+    <nav class="container mx-auto flex justify-between items-center h-full px-4">
+      {/* Logo Link */}
+      <a href="#hero" class="text-2xl font-bold text-blue-900 tracking-tight hover:text-yellow-700 transition">
+        Legacy Wealth Planners
+      </a>
+
+      {/* Desktop Navigation */}
+      <ul class="hidden md:flex items-center space-x-6 lg:space-x-8"> {/* Adjusted spacing */}
+        <li><a href="#about" class="hover:text-yellow-700 transition text-base lg:text-lg">About</a></li>
+        <li><a href="#services" class="hover:text-yellow-700 transition text-base lg:text-lg">Services</a></li>
+        <li><a href="#benefits" class="hover:text-yellow-700 transition text-base lg:text-lg">Benefits</a></li>
+        <li><a href="#testimonials" class="hover:text-yellow-700 transition text-base lg:text-lg">Testimonials</a></li>
+        <li><a href="#contact" class="hover:text-yellow-700 transition text-base lg:text-lg">Contact</a></li>
+        <li><a href="#guide" class="bg-yellow-600 text-white px-4 py-2 text-sm lg:text-base font-semibold rounded transition hover:bg-yellow-700 ml-2">Free Guide</a></li> {/* Added guide link here too */}
+      </ul>
+
+      {/* Mobile Menu Button (Hamburger) - Requires JavaScript for toggling */}
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-blue-900 focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </nav>
+    {/* Mobile Menu (Hidden by default) - Requires JavaScript */}
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white shadow-lg z-40">
+        <a href="#about" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">About</a>
+        <a href="#services" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">Services</a>
+        <a href="#benefits" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">Benefits</a>
+        <a href="#testimonials" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">Testimonials</a>
+        <a href="#contact" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">Contact</a>
+        <a href="#guide" class="block px-4 py-3 text-lg text-gray-800 hover:bg-gray-100 hover:text-yellow-700">Free Guide</a>
+    </div>
+  </header>
+
+  <main> {/* Added <main> wrapper for content */}
+    {/* pt-20 (5rem) matches header height h-20 (5rem). pt-24 adds extra space. Ensure this offset is correct. */}
+    <section id="hero" class="hero-bg flex items-center justify-center min-h-screen pt-24 pb-16 relative">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-md"> {/* Adjusted text size slightly */}
+          Secure Your Legacy as a Public Servant
+        </h1>
+        <p class="text-lg sm:text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto drop-shadow-sm"> {/* Adjusted max-width */}
+          Tailored financial solutions for those who serve South Africa.<br>
+          Holistic, ethical, and expert advice you deserve.
+        </p>
+        {/* Changed #consult to #contact */}
+        <a href="#contact"
+           class="bg-yellow-600 text-white px-6 py-3 sm:px-8 sm:py-4 text-lg sm:text-xl font-semibold rounded transition hover:bg-yellow-700 mr-2 sm:mr-4 mb-2 inline-block shadow-md hover:shadow-lg">
+           <i class="fas fa-calendar-alt mr-2"></i>Request Consultation
+        </a>
+        <a href="#services"
+           class="border-2 border-white text-white px-6 py-3 sm:px-8 sm:py-4 text-lg sm:text-xl font-semibold rounded hover:bg-white hover:text-blue-900 transition mb-2 inline-block shadow-md hover:shadow-lg">
+           <i class="fas fa-list mr-2"></i>Explore Services
+        </a>
+        <div class="mt-12 flex flex-col md:flex-row md:justify-center md:space-x-8 space-y-8 md:space-y-0 items-center">
+          {/* Ensure you have licenses for these images. Consider optimizing them. */}
+          <div class="flex justify-center">
+            <img src="https://www.epe-online.co.za/media/gcif1xv5/easypay-everywhere-empowering-south-african-families-with-financial-solutions.jpg"
+                 alt="South African family discussing financial planning"
+                 class="object-cover rounded-lg border-4 border-white shadow-lg max-w-xs sm:max-w-sm w-full"
+                 loading="lazy"> {/* Added loading="lazy" */}
+          </div>
+          <div class="flex justify-center">
+            <img src="https://fpi.co.za/wp-content/uploads/2022/07/2-768x910.jpg"
+                 alt="Professional financial advisor meeting with client"
+                 class="object-cover rounded-lg border-4 border-white shadow-lg max-w-xs sm:max-w-sm w-full"
+                 loading="lazy"> {/* Added loading="lazy" */}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="highlights" class="py-16 bg-white"> {/* Added ID for potential linking */}
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-blue-900 mb-10">Why Choose Legacy Wealth Planners?</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Card 1 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 text-center transform hover:scale-105 transition duration-300">
+            <div class="text-yellow-600 text-5xl mb-4"><i class="fas fa-users"></i></div>
+            <h3 class="font-semibold text-xl text-blue-900 mb-2">14+ Years Experience</h3>
+            <p class="text-gray-700">Specialized in serving government employees, understanding unique public sector needs.</p>
+          </div>
+          {/* Card 2 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 text-center transform hover:scale-105 transition duration-300">
+            <div class="text-yellow-600 text-5xl mb-4"><i class="fas fa-certificate"></i></div>
+            <h3 class="font-semibold text-xl text-blue-900 mb-2">FSCA Registered</h3>
+            <p class="text-gray-700">Fully compliant and licensed (<span class="font-semibold">FSP 12345</span>) for transparent, ethical financial advice. {/* Update FSP */} </p>
+          </div>
+          {/* Card 3 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 text-center transform hover:scale-105 transition duration-300">
+            <div class="text-yellow-600 text-5xl mb-4"><i class="fas fa-handshake"></i></div>
+            <h3 class="font-semibold text-xl text-blue-900 mb-2">Holistic Planning</h3>
+            <p class="text-gray-700">Estate, risk, investment, and retirement planning - all tailored for public servants.</p>
+          </div>
+          {/* Card 4 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 text-center transform hover:scale-105 transition duration-300">
+            <div class="text-yellow-600 text-5xl mb-4"><i class="fas fa-smile"></i></div>
+            <h3 class="font-semibold text-xl text-blue-900 mb-2">Client-Centric</h3>
+            <p class="text-gray-700">Your unique financial goals and legacy are our top priority every step of the way.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-12">
+        <div class="lg:w-1/3 flex justify-center">
+          {/* Ensure you have license for this image. Consider optimizing. Adjusted sizing for responsiveness. */}
+          <img src="https://thezacapital.co.za/wp-content/uploads/2020/12/thabiso-ramasike.jpg"
+               alt="Nkosinathi Sithole - Lead Financial Advisor"
+               class="object-cover rounded-full shadow-lg w-64 h-64 sm:w-80 sm:h-80 border-4 border-yellow-600"
+               loading="lazy"> {/* Changed shape to round, adjusted size */}
+        </div>
+        <div class="lg:w-2/3">
+          <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Meet Nkosinathi Sithole</h2>
+          <p class="text-gray-800 text-lg mb-4">With over 14 years in the financial services industry, Nkosinathi specializes in holistic financial solutions tailored specifically for South African public servants. His deep understanding of GEPF structures, government benefits, and the unique challenges faced by civil servants has empowered hundreds to secure their financial futures and build lasting legacies.</p>
+          <ul class="mb-6 text-gray-800 space-y-3"> {/* Increased spacing */}
+            <li><i class="fa-solid fa-check text-yellow-600 mr-2 w-5 text-center"></i>Advanced Financial Planning Certification</li>
+            <li><i class="fa-solid fa-check text-yellow-600 mr-2 w-5 text-center"></i>FSCA Registered Financial Advisor (<span class="font-semibold">FSP 12345</span>) {/* Update FSP */}</li>
+            <li><i class="fa-solid fa-check text-yellow-600 mr-2 w-5 text-center"></i>Dedicated Public Service Financial Specialist</li>
+            <li><i class="fa-solid fa-check text-yellow-600 mr-2 w-5 text-center"></i>Commitment to a Holistic, Client-First Approach</li>
+          </ul>
+          <blockquote class="italic text-blue-900 border-l-4 pl-4 py-2 border-yellow-600 bg-blue-50 rounded-r-md">
+            "My mission is to empower public servants with the knowledge and strategies needed to achieve financial independence and peace of mind. We provide tailored solutions that honor your dedicated service to South Africa."
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">Our Specialized Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Service Card 1 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition">
+            <div class="text-5xl text-yellow-600 text-center mb-4"><i class="fa-solid fa-shield-heart"></i></div>
+            <h3 class="font-semibold text-blue-900 text-xl mb-3 text-center">Public Service Life Cover</h3>
+            <ul class="text-gray-700 text-base list-disc pl-6 space-y-1 flex-grow"> {/* Added flex-grow */}
+              <li>Complements GEPF death benefits effectively</li>
+              <li>Affordable salary-linked premium options</li>
+              <li>Access to special rates for government employees</li>
+              <li>Comprehensive family & dependent protection</li>
+            </ul>
+          </div>
+          {/* Service Card 2 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition">
+            <div class="text-5xl text-yellow-600 text-center mb-4"><i class="fa-solid fa-file-invoice-dollar"></i></div> {/* Changed icon */}
+            <h3 class="font-semibold text-blue-900 text-xl mb-3 text-center">Estate Planning</h3>
+            <ul class="text-gray-700 text-base list-disc pl-6 space-y-1 flex-grow">
+              <li>Professional Will drafting & secure execution</li>
+              <li>Trust setup & beneficiary management</li>
+              <li>GEPF nomination & beneficiary optimization</li>
+              <li>Strategies to minimize estate duties</li>
+            </ul>
+          </div>
+          {/* Service Card 3 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition">
+            <div class="text-5xl text-yellow-600 text-center mb-4"><i class="fa-solid fa-chart-line"></i></div>
+            <h3 class="font-semibold text-blue-900 text-xl mb-3 text-center">Investment Planning</h3>
+            <ul class="text-gray-700 text-base list-disc pl-6 space-y-1 flex-grow">
+              <li>Tax-efficient investment strategies (TFSA)</li>
+              <li>Goal-based endowment investment options</li>
+              <li>Retirement Annuities (RA) advice</li>
+              <li>Diversified portfolios tailored to your risk profile</li>
+            </ul>
+          </div>
+          {/* Service Card 4 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition">
+            <div class="text-5xl text-yellow-600 text-center mb-4"><i class="fa-solid fa-person-cane"></i></div>
+            <h3 class="font-semibold text-blue-900 text-xl mb-3 text-center">Retirement Planning</h3>
+            <ul class="text-gray-700 text-base list-disc pl-6 space-y-1 flex-grow">
+              <li>In-depth GEPF benefit analysis & optimization</li>
+              <li>Strategies for supplementary retirement vehicles</li>
+              <li>Pre-retirement calculation & forecasting</li>
+              <li>Post-retirement income & drawdown strategies</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits" class="py-16 bg-gray-100"> {/* Changed bg color slightly */}
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-10">Exclusive Benefits for Public Servants</h2>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-10 items-center">
+          <div class="md:col-span-2">
+            {/* Ensure you have license for this image. Consider optimizing. */}
+            <img src="https://web-assets.bcg.com/dims4/default/688280d/2147483647/strip/true/crop/1997x1355+0+0/resize/768x521!/format/webp/quality/90/?url=http%3A%2F%2Fboston-consulting-group-brightspot.s3.amazonaws.com%2F17%2Fd9%2F169a7bb0ac468c24d7709b3f5cda%2Fimproving-financial-inclusion-in-south-africa-ex01-tcm9-146577.jpg"
+                 alt="Illustration showing financial security elements"
+                 class="rounded-lg shadow-md max-w-full border-4 border-yellow-600" loading="lazy">
+          </div>
+          <div class="md:col-span-3">
+            <ul class="space-y-5 text-lg text-gray-800"> {/* Increased spacing */}
+              <li class="flex items-start"><i class="fa-solid fa-layer-group text-yellow-600 mr-3 mt-1 w-6 text-center"></i><div><strong class="text-blue-900 block">Complement Government Benefits:</strong> Our strategies are designed to enhance your GEPF and other public sector offerings, effectively closing critical financial protection gaps.</div></li>
+              <li class="flex items-start"><i class="fa-solid fa-tags text-yellow-600 mr-3 mt-1 w-6 text-center"></i><div><strong class="text-blue-900 block">Potential Special Rates:</strong> Leverage your stable government employment to potentially access reduced premiums and preferential fees on certain products.</div></li>
+              <li class="flex items-start"><i class="fa-solid fa-user-tie text-yellow-600 mr-3 mt-1 w-6 text-center"></i><div><strong class="text-blue-900 block">Career Milestone Alignment:</strong> We offer adaptive financial plans and coverages that can evolve with your promotions, salary increases, and changing responsibilities within the public sector.</div></li>
+              <li class="flex items-start"><i class="fa-solid fa-right-left text-yellow-600 mr-3 mt-1 w-6 text-center"></i><div><strong class="text-blue-900 block">Seamless Transitions:</strong> We ensure your financial plan remains robust and relevant, even if you move between government departments or associated entities.</div></li>
+              <li class="flex items-start"><i class="fa-solid fa-graduation-cap text-yellow-600 mr-3 mt-1 w-6 text-center"></i><div><strong class="text-blue-900 block">Comprehensive Family Protection:</strong> Secure your dependents' futures with strategies covering essential needs, including educational funding stability.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-900 mb-12">What Fellow Public Servants Say</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Testimonial 1 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 flex flex-col">
+            <div class="flex items-center mb-4">
+               {/* Ensure permission if using real photos, or state they are representative. Optimize images. */}
+              <img src="https://i.ibb.co/hCZVJP7/female-teacher.jpg" alt="Thandi Nkosi" class="w-16 h-16 rounded-full object-cover border-2 border-yellow-600 mr-4 shadow-sm" loading="lazy">
+              <div>
+                <div class="font-bold text-lg text-blue-900">Thandi Nkosi</div>
+                <div class="text-sm text-gray-600">Dept. of Basic Education, 15 yrs Service</div>
+              </div>
+            </div>
+            <div class="text-yellow-600 text-lg mb-2">
+                <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-gray-700 flex-grow italic">"Legacy Wealth Planners helped me understand my GEPF benefits properly and created a financial plan that complements it perfectly. I finally feel confident about my retirement and know my family is protected."</p>
+          </div>
+          {/* Testimonial 2 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 flex flex-col">
+            <div class="flex items-center mb-4">
+              <img src="https://i.ibb.co/DM8R3J8/african-male-doctor.jpg" alt="James Molefe" class="w-16 h-16 rounded-full object-cover border-2 border-yellow-600 mr-4 shadow-sm" loading="lazy">
+              <div>
+                <div class="font-bold text-lg text-blue-900">Dr. James Molefe</div>
+                <div class="text-sm text-gray-600">Dept. of Health, 8 yrs Service</div>
+              </div>
+            </div>
+             <div class="text-yellow-600 text-lg mb-2">
+                <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-gray-700 flex-grow italic">"Nkosinathi took the time to understand the specifics of my role in public health. The tailored risk protection plan he designed grows with my career. Their expertise in government employee benefits is truly outstanding."</p>
+          </div>
+          {/* Testimonial 3 */}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg shadow p-6 flex flex-col">
+            <div class="flex items-center mb-4">
+              <img src="https://i.ibb.co/W5pWjht/female-lawyer.jpg" alt="Sarah Jacobs" class="w-16 h-16 rounded-full object-cover border-2 border-yellow-600 mr-4 shadow-sm" loading="lazy">
+              <div>
+                <div class="font-bold text-lg text-blue-900">Adv. Sarah Jacobs</div>
+                <div class="text-sm text-gray-600">Dept. of Justice, 12 yrs Service</div>
+              </div>
+            </div>
+             <div class="text-yellow-600 text-lg mb-2">
+                <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star-half-alt"></i> {/* Example half star */}
+            </div>
+            <p class="text-gray-700 flex-grow italic">"I thought my GEPF was enough, but Legacy Wealth Planners clearly showed me the potential gaps. Their comprehensive approach ensured these were covered and my overall benefits were optimized. Highly recommend."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-blue-900 text-white" id="guide">
+      <div class="container mx-auto px-4 text-center">
+        <i class="fas fa-download text-5xl text-yellow-500 mb-4"></i>
+        <h2 class="text-3xl font-bold mb-3">Free Guide: Maximize Your Public Sector Benefits</h2>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">Learn how to optimize your GEPF benefits and shield your family from critical financial protection gaps. Exclusively for South African public servants.</p>
+        <div class="max-w-xl mx-auto">
+          {/* Add form action and method. Needs backend or service integration. */}
+          <form action="/submit-guide-request" method="POST" class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <label for="guide-email" class="sr-only">Email Address</label> {/* Added label for accessibility */}
+            <input
+              id="guide-email"
+              type="email"
+              name="email" /* Added name attribute */
+              placeholder="Enter Your Email Address"
+              class="flex-1 w-full sm:w-auto px-5 py-3 rounded border text-gray-800 focus:outline-none focus:ring-2 ring-yellow-600"
+              required
+              aria-label="Email for free guide"
+            >
+            <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-3 rounded font-semibold text-lg transition shadow-md hover:shadow-lg w-full sm:w-auto">
+              <i class="fas fa-paper-plane mr-2"></i>Get My Free Guide
+            </button>
+          </form>
+           {/* Optional: Add privacy text */}
+           <p class="text-xs text-gray-300 mt-4">We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-gray-50"> {/* Increased padding */}
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-10 text-center">Request Your No-Obligation Consultation</h2>
+        <div class="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start">
+          {/* Contact Form */}
+          <div class="w-full lg:w-3/5 xl:w-1/2">
+            {/* Add form action and method. Needs backend or service integration. */}
+            <form action="/submit-consultation-request" method="POST" class="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="mb-4">
+                  <label class="block text-gray-700 mb-2 font-semibold" for="name">Full Name <span class="text-red-500">*</span></label>
+                  <input id="name" name="name" type="text" placeholder="e.g., John Doe" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 mb-2 font-semibold" for="email">Email Address <span class="text-red-500">*</span></label>
+                  <input id="email" name="email" type="email" placeholder="your.email@example.com" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 mb-2 font-semibold" for="phone">Phone Number</label>
+                  <input id="phone" name="phone" type="tel" placeholder="e.g., 082 123 4567" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 mb-2 font-semibold" for="dept">Government Department / Entity</label>
+                  <input id="dept" name="department" type="text" placeholder="e.g., Education, SAPS, Health..." class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700 mb-2 font-semibold" for="service">Primary Service of Interest</label>
+                <select id="service" name="service_interest" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white">
+                  <option value="">-- Please Select --</option>
+                  <option value="Life Cover">Public Service Life Cover</option>
+                  <option value="Estate Planning">Estate Planning & Wills</option>
+                  <option value="Investment Planning">Investment Planning</option>
+                  <option value="Retirement Planning">Retirement Planning (GEPF Focus)</option>
+                  <option value="Holistic Review">Holistic Financial Review</option>
+                  <option value="Other">Other / Not Sure</option>
+                </select>
+              </div>
+              <div class="mb-6">
+                <label class="block text-gray-700 mb-2 font-semibold" for="message">Your Message or Questions (Optional)</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us briefly about your financial goals or specific questions..." class="w-full px-4 py-3 border border-gray-300 rounded resize-y focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea> {/* Changed resize-none to resize-y */}
+              </div>
+              <button class="bg-yellow-600 hover:bg-yellow-700 text-white px-10 py-3 rounded font-bold text-lg transition w-full shadow-md hover:shadow-lg" type="submit">
+                <i class="fas fa-check-circle mr-2"></i>Submit Consultation Request
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info */}
+          <div class="w-full lg:w-2/5 xl:w-1/2 lg:pt-8">
+            <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-8">
+              <h3 class="text-2xl font-semibold text-blue-900 mb-5 border-b pb-2">Contact Information</h3>
+              <div class="flex items-start mb-4">
+                <span class="text-2xl text-yellow-600 mr-4 mt-1"><i class="fa-solid fa-location-dot fa-fw"></i></span>
+                {/* Update with actual address */}
+                <span class="text-gray-700">123 Financial Plaza, Sandton Central,<br>Johannesburg, 2196, South Africa</span>
+              </div>
+              <div class="flex items-start mb-4">
+                <span class="text-2xl text-yellow-600 mr-4 mt-1"><i class="fa-solid fa-phone fa-fw"></i></span>
+                 {/* Update with actual phone numbers */}
+                <span class="text-gray-700">Office: <a href="tel:+27111234567" class="hover:text-yellow-700">+27 11 123 4567</a><br>Mobile: <a href="tel:+27823456789" class="hover:text-yellow-700">+27 82 345 6789</a></span>
+              </div>
+              <div class="flex items-start mb-4">
+                <span class="text-2xl text-yellow-600 mr-4 mt-1"><i class="fa-solid fa-envelope fa-fw"></i></span>
+                 {/* Update with actual email addresses */}
+                <span class="text-gray-700">
+                    <a href="mailto:nkosinathi@legacywealthplanners.co.za" class="hover:text-yellow-700 block">nkosinathi@legacywealthplanners.co.za</a>
+                    <a href="mailto:info@legacywealthplanners.co.za" class="hover:text-yellow-700 block">info@legacywealthplanners.co.za</a>
+                </span>
+              </div>
+              <div class="flex items-start">
+                <span class="text-2xl text-yellow-600 mr-4 mt-1"><i class="fa-solid fa-clock fa-fw"></i></span>
+                <span class="text-gray-700">
+                  <strong>Mon - Fri:</strong> 8:00 AM - 5:00 PM<br>
+                  <strong>Sat:</strong> 9:00 AM - 12:00 PM (By appointment only)<br>
+                  <strong>Sun & Public Holidays:</strong> Closed
+                </span>
+              </div>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold text-blue-900 mb-3">Connect With Us:</h4>
+                <div class="flex space-x-4">
+                  {/* Update href="#" with actual social media links */}
+                  <a href="#" target="_blank" rel="noopener noreferrer" class="text-blue-900 text-3xl hover:text-yellow-600 transition" aria-label="Legacy Wealth Planners on Facebook"><i class="fab fa-facebook-square"></i></a>
+                  <a href="#" target="_blank" rel="noopener noreferrer" class="text-blue-900 text-3xl hover:text-yellow-600 transition" aria-label="Legacy Wealth Planners on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" target="_blank" rel="noopener noreferrer" class="text-blue-900 text-3xl hover:text-yellow-600 transition" aria-label="Legacy Wealth Planners on X (formerly Twitter)"><i class="fab fa-x-twitter"></i></a>
+                  <a href="https://wa.me/27823456789" target="_blank" rel="noopener noreferrer" class="text-blue-900 text-3xl hover:text-green-600 transition" aria-label="Contact Legacy Wealth Planners on WhatsApp"><i class="fab fa-whatsapp"></i></a> {/* Update WhatsApp number */}
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-blue-900 text-gray-300 py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {/* Column 1: Brand & Contact */}
+            <div class="lg:col-span-2">
+              <h5 class="text-2xl font-bold text-white mb-3">Legacy Wealth Planners</h5>
+              <p class="mb-2">Dedicated Financial Planning for South Africa's Public Servants.</p>
+              {/* Update FSP Number */}
+              <div class="mb-1">FSCA Registration No: <span class="font-semibold text-white">FSP 12345</span></div>
+              {/* Update Address */}
+              <div class="mb-1"><i class="fa-solid fa-location-dot fa-fw mr-1"></i> 123 Financial Plaza, Sandton, JHB, SA</div>
+              {/* Update Phone */}
+              <div class="mb-1"><i class="fa-solid fa-phone fa-fw mr-1"></i> <a href="tel:+27111234567" class="hover:text-yellow-400">+27 11 123 4567</a></div>
+              {/* Update Email */}
+              <div class="mb-1"><i class="fa-solid fa-envelope fa-fw mr-1"></i> <a href="mailto:info@legacywealthplanners.co.za" class="hover:text-yellow-400">info@legacywealthplanners.co.za</a></div>
+            </div>
+
+            {/* Column 2: Quick Links */}
+            <div class="md:col-span-1">
+              <h6 class="font-semibold text-white text-lg mb-3">Quick Links</h6>
+              <ul class="space-y-2">
+                  <li><a href="#hero" class="hover:text-yellow-400 transition">Home</a></li>
+                  <li><a href="#about" class="hover:text-yellow-400 transition">About Us</a></li>
+                  <li><a href="#services" class="hover:text-yellow-400 transition">Our Services</a></li>
+                  <li><a href="#benefits" class="hover:text-yellow-400 transition">Public Servant Benefits</a></li>
+                  <li><a href="#testimonials" class="hover:text-yellow-400 transition">Client Testimonials</a></li>
+                  <li><a href="#contact" class="hover:text-yellow-400 transition">Contact & Consultation</a></li>
+                  <li><a href="#guide" class="hover:text-yellow-400 transition">Free Guide</a></li>
+                  {/* Optional: Add Privacy Policy / Disclaimer links */}
+                  </ul>
+            </div>
+
+            {/* Column 3: Connect */}
+             <div class="md:col-span-1">
+               <h6 class="font-semibold text-white text-lg mb-3">Connect With Us</h6>
+               <div class="flex space-x-4 mt-2">
+                 {/* Update href="#" with actual social media links */}
+                 <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-2xl transition" aria-label="Facebook"><i class="fab fa-facebook-square"></i></a>
+                 <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-2xl transition" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                 <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-2xl transition" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                 <a href="https://wa.me/27823456789" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-2xl transition" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a> {/* Update WhatsApp Number */}
+               </div>
+            </div>
+        </div>
+
+        {/* Copyright & Disclaimer */}
+        <div class="text-center text-gray-400 mt-10 pt-6 border-t border-gray-700 text-sm">
+          &copy; <span id="current-year">2024</span> Legacy Wealth Planners. All rights reserved. {/* Year needs update */}
+          <br>
+          Legacy Wealth Planners (Pty) Ltd is an authorised Financial Services Provider.
+          {/* Update FSP Number */}
+          (<span class="italic">FSP Licence No: 12345</span>). Financial advice is subject to suitability assessment.
+        </div>
+    </div>
+  </footer>
+
+  {/* Basic JavaScript for Mobile Menu Toggle & Dynamic Year */}
+  <script>
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      // Optional: Add ARIA attribute toggling for accessibility
+      const isExpanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
+      menuButton.setAttribute('aria-expanded', !isExpanded);
+       mobileMenu.setAttribute('aria-hidden', isExpanded); // Opposite of button's expanded state
+    });
+
+     // Close menu if clicking a link inside it
+     mobileMenu.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A') {
+            mobileMenu.classList.add('hidden');
+            menuButton.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    // Dynamic Year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Basic smooth scroll for anchor links (alternative to CSS class="scroll-smooth")
+    // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    //   anchor.addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     const targetId = this.getAttribute('href');
+    //     const targetElement = document.querySelector(targetId);
+    //     if(targetElement) {
+    //         // Calculate offset for fixed header
+    //         const headerOffset = document.querySelector('header').offsetHeight || 80; // Get header height or use default
+    //         const elementPosition = targetElement.getBoundingClientRect().top;
+    //         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    //         window.scrollTo({
+    //             top: offsetPosition,
+    //             behavior: "smooth"
+    //         });
+    //         // Close mobile menu if open after clicking a link
+    //         if (!mobileMenu.classList.contains('hidden')) {
+    //             mobileMenu.classList.add('hidden');
+    //         }
+    //     }
+    //   });
+    // });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Debt vs Investment — SA Consumer Planner</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green-900: #0f3b2d;
+    --green-800: #164d3a;
+    --green-700: #1f5f47;
+    --green-500: #2f8f6a;
+    --green-300: #8fc3a8;
+    --green-100: #e4f1ea;
+    --cream: #faf6ef;
+    --sand: #f1ead9;
+    --ink: #1c1c1c;
+    --muted: #6b6b6b;
+    --danger: #b23b3b;
+    --warn: #b07a1b;
+    --ok: #2f8f6a;
+    --border: #d9cfb8;
+    --shadow: 0 8px 30px rgba(15, 59, 45, 0.06);
+    --shadow-hover: 0 12px 40px rgba(15, 59, 45, 0.1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body {
+    margin: 0; padding: 0; background: var(--cream); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.6;
+  }
+  a { color: var(--green-700); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header {
+    background: linear-gradient(135deg, var(--green-900), var(--green-700));
+    color: #fff; padding: 32px 24px; text-align: center;
+  }
+  header h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { margin: 10px auto 0; color: var(--green-100); font-size: 15px; max-width: 700px; opacity: 0.9; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  details {
+    border: 1px solid var(--border); border-radius: 12px; background: #fff;
+    transition: all 0.25s ease; margin-bottom: 16px;
+  }
+  details[open] { border-color: var(--green-300); box-shadow: var(--shadow); }
+  details summary {
+    cursor: pointer; padding: 16px 20px; font-weight: 600; color: var(--green-900);
+    list-style: none; display: flex; align-items: center; gap: 10px; user-select: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after {
+    content: "▼"; font-size: 10px; margin-left: auto; transition: transform 0.25s ease; color: var(--muted);
+  }
+  details[open] summary::after { transform: rotate(180deg); }
+  details .details-content { padding: 0 20px 20px 20px; border-top: 1px solid var(--green-100); margin-top: 0; padding-top: 16px; }
+
+  details.explainer { background: var(--green-100); border: 1px solid var(--green-300); }
+  details.explainer summary { color: var(--green-900); font-size: 16px; }
+  details.explainer .details-content { color: var(--green-900); font-size: 14px; line-height: 1.7; }
+  details.explainer ul { padding-left: 20px; margin: 10px 0; }
+  details.explainer li { margin-bottom: 6px; }
+
+  /* Chat Section Styling */
+  details.chat-assistant { 
+    background: linear-gradient(135deg, #f8f9fa, #fff); 
+    border: 2px solid var(--green-500);
+    box-shadow: 0 4px 20px rgba(47, 143, 106, 0.15);
+  }
+  details.chat-assistant summary { 
+    background: var(--green-700); 
+    color: #fff; 
+    border-radius: 10px 10px 0 0;
+    font-size: 16px;
+  }
+  details.chat-assistant summary:hover { background: var(--green-800); }
+  details.chat-assistant[open] summary { border-radius: 10px 10px 0 0; }
+  details.chat-assistant .details-content { 
+    background: #fff; 
+    border-radius: 0 0 10px 10px;
+  }
+
+  .chat-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    background: #fafafa;
+    margin-bottom: 16px;
+  }
+
+  .chat-message {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.5;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-message.bot {
+    background: var(--green-100);
+    color: var(--green-900);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+
+  .chat-message.user {
+    background: var(--green-700);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+  }
+
+  .chat-input-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .chat-input-container input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .chat-input-container input:focus {
+    outline: none;
+    border-color: var(--green-500);
+  }
+
+  .chat-input-container button {
+    padding: 12px 20px;
+    background: var(--green-700);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .chat-input-container button:hover {
+    background: var(--green-900);
+  }
+
+  .quick-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .quick-question-btn {
+    padding: 8px 14px;
+    background: #fff;
+    border: 1px solid var(--green-300);
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--green-700);
+  }
+
+  .quick-question-btn:hover {
+    background: var(--green-100);
+    border-color: var(--green-500);
+  }
+
+  .grid { display: grid; gap: 24px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: #fff; border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px; box-shadow: var(--shadow); transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .card h2 {
+    margin: 0 0 16px; font-size: 18px; color: var(--green-900);
+    border-bottom: 2px solid var(--green-100); padding-bottom: 10px;
+  }
+  .card h3 { margin: 16px 0 8px; font-size: 13px; color: var(--green-700); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin: 12px 0 6px; }
+  input, select {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 8px; background: #fff; font-size: 15px; color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus, select:focus {
+    outline: none; border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(47, 143, 106, 0.15);
+  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+  
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+  .btn {
+    background: var(--green-700); color: #fff; border: none; padding: 14px 24px;
+    border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 4px 12px rgba(31, 95, 71, 0.2);
+  }
+  .btn:hover { background: var(--green-900); transform: translateY(-1px); }
+  .btn.secondary { background: #fff; color: var(--green-700); border: 1px solid var(--green-700); box-shadow: none; }
+  .btn.secondary:hover { background: var(--green-100); }
+  .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+  .metric {
+    background: var(--green-100); border-radius: 12px; padding: 18px;
+    border: 1px solid rgba(47, 143, 106, 0.1);
+  }
+  .metric .label { font-size: 11px; color: var(--green-700); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+  .metric .value { font-size: 24px; font-weight: 800; color: var(--green-900); margin-top: 4px; }
+  .metric .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--sand); color: var(--green-900); font-weight: 600; position: sticky; top: 0; }
+  tr:hover td { background: #fdfaf2; }
+
+  .tag {
+    display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .tag.a { background: #e4f1ea; color: var(--green-700); }
+  .tag.b { background: #fff3d9; color: #8a5a00; }
+  .tag.c { background: #fde4e4; color: #8a1f1f; }
+
+  .alert { padding: 14px 16px; border-radius: 10px; margin: 12px 0; font-size: 13px; line-height: 1.5; }
+  .alert.warn { background: #fff3d9; border-left: 4px solid var(--warn); color: #5a3e00; }
+  .alert.danger { background: #fde4e4; border-left: 4px solid var(--danger); color: #6a1414; }
+  .alert.info { background: var(--green-100); border-left: 4px solid var(--green-500); color: var(--green-900); }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px;
+    background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted);
+    transition: all 0.2s;
+  }
+  .tab:hover { background: var(--sand); }
+  .tab.active { background: var(--green-700); color: #fff; border-color: var(--green-700); }
+  
+  .chart-wrap { position: relative; height: 380px; }
+
+  .test-grid { display: grid; gap: 12px; }
+  .test { border: 1px solid var(--border); border-radius: 10px; padding: 14px; background: #fffdf7; font-size: 13px; }
+  .test .title { font-weight: 700; color: var(--green-900); margin-bottom: 6px; }
+  .pass { color: var(--ok); font-weight: 700; }
+  .fail { color: var(--danger); font-weight: 700; }
+
+  footer { margin: 48px 0 24px; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  
+  .strategy-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .strategy-header h3 { margin: 0; text-transform: none; letter-spacing: 0; font-size: 16px; color: var(--green-900); }
+  .legend { font-size: 13px; color: var(--muted); margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  #summary-table { 
+    width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); 
+  }
+  #summary-table th { 
+    background: var(--green-800); color: #fff; text-align: center; padding: 14px 10px; font-size: 13px; font-weight: 600; 
+  }
+  #summary-table th:first-child { text-align: left; }
+  #summary-table td { padding: 14px 10px; text-align: center; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  #summary-table td:first-child { text-align: left; }
+  #summary-table tbody tr:last-child td { border-bottom: none; }
+  #summary-table tbody tr:hover td { background: #f4f1e8; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Debt vs Investment Planner</h1>
+  <p>Compare the financial impact of paying off debt faster versus continuing to invest. Built for South African consumers.</p>
+</header>
+
+<main>
+  <details class="explainer" open>
+    <summary>💡 How to use this tool (Click to collapse)</summary>
+    <div class="details-content">
+      <p><strong>Not sure whether to pay off debt faster or keep investing?</strong> This tool compares three common strategies to help you decide what makes the most mathematical sense for your situation.</p>
+      <ul>
+        <li><strong>Strategy A (Status Quo):</strong> Keep paying your loan and investing exactly as you are now.</li>
+        <li><strong>Strategy B (Accelerate):</strong> Make extra payments on your loan while maintaining your current investment contributions.</li>
+        <li><strong>Strategy C (Prioritise Debt):</strong> Temporarily pause your investments and redirect that money to your loan. Once the debt is cleared, invest that entire freed-up monthly cash flow.</li>
+      </ul>
+      <p><em>Tip: Start by entering your basic loan and investment balances below. If you know your specific fees or insurance premiums, click "Show advanced options" inside each card.</em></p>
+    </div>
+  </details>
+
+  <div class="grid grid-2">
+    <!-- LOAN INPUTS -->
+    <section class="card">
+      <h2>💳 Loan Details</h2>
+      <div class="row">
+        <div>
+          <label>Current Loan Balance (R)</label>
+          <input id="loan_principal" type="number" value="100000" min="0" step="100" />
+        </div>
+        <div>
+          <label>Interest Rate (% per year)</label>
+          <input id="loan_rate" type="number" value="23" min="0" max="60" step="0.1" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Months Remaining</label>
+          <input id="loan_months" type="number" value="29" min="1" max="480" step="1" />
+        </div>
+        <div>
+          <label>Monthly Instalment (R)</label>
+          <input id="loan_instalment" type="number" value="4550" min="0" step="10" />
+          <div class="hint">Leave blank to auto-calculate based on balance, rate, and term.</div>
+        </div>
+      </div>
+      
+      <details class="advanced">
+        <summary>⚙️ Show advanced loan options (fees, insurance, extra payments)</summary>
+        <div class="details-content">
+          <div class="row">
+            <div>
+              <label>Credit-life Insurance (R/month)</label>
+              <input id="cl_premium" type="number" value="180" min="0" step="1" />
+            </div>
+            <div>
+              <label>Insurance Calculation</label>
+              <select id="cl_method">
+                <option value="fixed">Fixed monthly amount</option>
+                <option value="declining">Declines with loan balance</option>
+                <option value="unknown">Unknown / Unverified</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Monthly Admin Fee (R)</label>
+              <input id="admin_fee" type="number" value="69" min="0" step="1" />
+              <div class="hint">NCR cap for many unsecured loans is R69 incl. VAT.</div>
+            </div>
+            <div>
+              <label>Other Monthly Fees (R)</label>
+              <input id="other_fees" type="number" value="0" min="0" step="1" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Does instalment include fees/insurance?</label>
+              <select id="instalment_includes">
+                <option value="no">No — paid separately</option>
+                <option value="yes">Yes — bundled in instalment</option>
+              </select>
+            </div>
+            <div>
+              <label>Extra Monthly Repayment (R)</label>
+              <input id="extra_repay" type="number" value="0" min="0" step="100" />
+            </div>
+          </div>
+          <label>Contractual notes on early settlement</label>
+          <input id="contract_notes" type="text" placeholder="e.g. No penalty, 2 extra payments p.a. allowed" />
+        </div>
+      </details>
+    </section>
+
+    <!-- INVESTMENT INPUTS -->
+    <section class="card">
+      <h2> Investment Details</h2>
+      <div class="row">
+        <div>
+          <label>Current Investment Value (R)</label>
+          <input id="inv_current" type="number" value="50000" min="0" step="100" />
+        </div>
+        <div>
+          <label>Monthly Contribution (R)</label>
+          <input id="inv_contrib" type="number" value="1000" min="0" step="100" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Expected Annual Return (%)</label>
+          <input id="inv_return" type="number" value="10" min="0" max="40" step="0.1" />
+        </div>
+        <div>
+          <label>Annual Investment Fees (%)</label>
+          <input id="inv_fees" type="number" value="1.5" min="0" max="10" step="0.1" />
+        </div>
+      </div>
+
+      <details class="advanced">
+        <summary>⚙️ Show advanced investment options (tax, timing, reserves)</summary>
+        <div class="details-content">
+          <div class="row">
+            <div>
+              <label>Effective Annual Tax on Returns (%)</label>
+              <input id="inv_tax" type="number" value="0" min="0" max="45" step="0.5" />
+              <div class="hint">Leave 0 if unknown. Depends on vehicle (TFSA, RA, etc.).</div>
+            </div>
+            <div>
+              <label>Contribution Timing</label>
+              <select id="inv_timing">
+                <option value="end">End of month</option>
+                <option value="start">Start of month</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Emergency Cash Reserve (R)</label>
+              <input id="emergency" type="number" value="20000" min="0" step="1000" />
+              <div class="hint">Excluded from investment growth. Acts as a liquidity buffer.</div>
+            </div>
+            <div>
+              <label>Projection Horizon (months)</label>
+              <input id="horizon" type="number" value="60" min="1" max="480" step="1" />
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <div class="actions">
+        <button class="btn" onclick="runAll()">Calculate & Compare</button>
+        <button class="btn secondary" onclick="resetDefaults()">Reset to Defaults</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- RESULTS -->
+  <section id="results-section" class="card" style="margin-top:24px">
+    <h2> Strategy Comparison</h2>
+    <div class="legend">
+      <span class="tag a">A — Status Quo</span> Continue scheduled repayments and regular investing.
+      <span class="tag b">B — Accelerate</span> Make extra loan repayments while keeping investments.
+      <span class="tag c">C — Prioritise Debt</span> Redirect investment cash to the loan; invest freed cash flow after settlement.
+    </div>
+    <div id="alerts"></div>
+    <div class="grid grid-3" id="metrics"></div>
+    <div class="grid grid-3" id="cost_breakdown" style="margin-top:20px"></div>
+  </section>
+
+  <!-- BOTTOM LINE SUMMARY TABLE -->
+  <section class="card" style="margin-top:24px; border: 2px solid var(--green-500); background: #fdfcf9;">
+    <h2>🎯 The Bottom Line: End-of-Term Comparison</h2>
+    <p class="hint" style="margin-bottom: 16px; font-size: 14px; color: var(--ink); max-width: 800px;">
+      This table shows exactly where you will stand at the end of your projection period (<strong id="summary-horizon-text">60 months</strong>). It highlights how much you save or gain compared to staying on your current path (Option A), so no mental math is required.
+    </p>
+    <div style="overflow-x: auto;">
+      <table id="summary-table">
+        <!-- Populated by JS -->
+      </table>
+    </div>
+  </section>
+
+  <!-- CHAT ASSISTANT -->
+  <details class="chat-assistant" style="margin-top: 24px;">
+    <summary>💬 Ask Questions About Your Results (Chat Assistant)</summary>
+    <div class="details-content">
+      <div class="chat-container" id="chat-container">
+        <div class="chat-message bot">
+          👋 Hello! I'm here to help you understand your debt vs investment comparison. What would you like to know?
+        </div>
+      </div>
+      
+      <div class="quick-questions">
+        <button class="quick-question-btn" onclick="askQuestion('Which strategy saves me the most money?')">💰 Best savings?</button>
+        <button class="quick-question-btn" onclick="askQuestion('When will my loan be paid off in each strategy?')">📅 Loan payoff dates</button>
+        <button class="quick-question-btn" onclick="askQuestion('Should I prioritise debt or investment?')"> Debt vs Investment?</button>
+        <button class="quick-question-btn" onclick="askQuestion('How much interest will I save?')">📉 Interest savings</button>
+      </div>
+
+      <div class="chat-input-container">
+        <input type="text" id="chat-input" placeholder="Type your question here..." onkeypress="handleChatKeypress(event)" />
+        <button onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </details>
+
+  <!-- CHARTS -->
+  <section class="card" style="margin-top:24px">
+    <h2>📈 Interactive Charts (Cash Flow Over Time)</h2>
+    <div class="tabs">
+      <div class="tab active" onclick="showChart('debt',this)">Debt vs Investment</div>
+      <div class="tab" onclick="showChart('net',this)">Net Financial Position</div>
+      <div class="tab" onclick="showChart('costs',this)">Cumulative Loan Costs</div>
+    </div>
+    <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+  </section>
+
+  <!-- MONTHLY TABLE -->
+  <section class="card" style="margin-top:24px">
+    <h2>📅 Detailed Monthly Checkpoints</h2>
+    <div class="tabs" id="tableTabs"></div>
+    <div style="overflow-x: auto;" id="monthlyTable"></div>
+  </section>
+
+  <!-- METHODOLOGY -->
+  <details style="margin-top:24px">
+    <summary>📚 Methodology, Formulas & South African References</summary>
+    <div class="details-content">
+      <h3>Amortisation Engine</h3>
+      <ul>
+        <li>Monthly rate <code>r = annual_rate / 12</code></li>
+        <li>Interest<sub>m</sub> = opening_balance × r</li>
+        <li>If instalment &lt; interest, negative amortisation is flagged (loan never settles at that payment level).</li>
+        <li>Final payment is truncated so balance never goes negative; no interest or fees are charged after settlement.</li>
+      </ul>
+      <h3>Key Caveats</h3>
+      <ul>
+        <li>Projections are not guarantees. Investment returns are assumed constant; real markets are volatile.</li>
+        <li>Early settlement quotations from your lender always override this model.</li>
+        <li><strong>National Credit Act 34 of 2005:</strong> Reg.43–45 set maximum initiation and monthly service fees. The commonly cited monthly service fee cap for unsecured credit is R69 including VAT.</li>
+      </ul>
+      <div class="alert info">Lender-specific premium formulas and early-settlement quotation conventions vary. Always confirm with your credit provider and a registered FSP before acting.</div>
+    </div>
+  </details>
+
+  <!-- TESTS -->
+  <details style="margin-top:16px">
+    <summary>🛠️ Developer / Independent Validation Tests</summary>
+    <div class="details-content">
+      <button class="btn secondary" onclick="runTests()" style="margin-bottom:16px">Run Validation Suite</button>
+      <div class="test-grid" id="testResults">
+        <div class="hint">Click the button above to execute the 10-case mathematical validation suite.</div>
+      </div>
+    </div>
+  </details>
+
+  <footer>
+    Educational tool only — not financial advice. Verify all figures with your credit provider and a registered Financial Services Provider (FSP).<br>
+    Built for South African consumers under the National Credit Act framework.
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   CALCULATION ENGINE
+   ============================================================ */
+const ZAR = v => (isFinite(v) ? 'R' + Math.round(v).toLocaleString('en-ZA') : '—');
+const ZAR2 = v => (isFinite(v) ? 'R' + v.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—');
+
+function amortise(opts){
+  const {principal, annualRate, months, instalment, clPremium, clMethod, adminFee, otherFees, extraPerMonth, instalmentIncludes, horizon} = opts;
+  const r = annualRate/100/12;
+  let bal = principal;
+  const schedule = [];
+  let totInterest=0, totPrincipal=0, totCL=0, totAdmin=0, totOther=0, totCashOut=0;
+  let settledMonth = null;
+  let negativeAmort = false;
+
+  for(let m=1; m<=Math.max(months, horizon); m++){
+    if(bal<=0){
+      schedule.push({m, opening:0, interest:0, principal:0, closing:0, instalment:0, cl:0, admin:0, other:0, cashOut:0});
+      continue;
+    }
+    const opening = bal;
+    const interest = opening * r;
+    let cl = (clMethod==='fixed' || clMethod==='unknown') ? clPremium : clPremium * (opening/principal);
+    const admin = adminFee;
+    const other = otherFees;
+
+    let paymentPI = instalment;
+    if(instalmentIncludes) paymentPI = Math.max(0, instalment - cl - admin - other);
+    
+    const extra = (settledMonth===null ? extraPerMonth : 0);
+    const available = paymentPI + extra;
+
+    if(available < interest && available>0) negativeAmort = true;
+
+    let princPaid = Math.min(opening, Math.max(0, available - interest));
+    const closing = Math.max(0, opening + interest - available);
+    const actualCash = Math.min(available, opening + interest);
+
+    bal = closing;
+    totInterest += interest;
+    totPrincipal += princPaid;
+    totCL += cl;
+    totAdmin += admin;
+    totOther += other;
+    
+    const totalCashThisMonth = instalmentIncludes ? (instalment + extra) : (instalment + extra + cl + admin + other);
+    totCashOut += (settledMonth===null ? totalCashThisMonth : 0);
+
+    if(bal<=0 && settledMonth===null) settledMonth = m;
+
+    schedule.push({ m, opening, interest, principal:princPaid, closing, instalment, extra, cl, admin, other, cashOut: settledMonth===null ? totalCashThisMonth : 0 });
+  }
+  return { schedule, settledMonth, totals:{interest:totInterest, principal:totPrincipal, cl:totCL, admin:totAdmin, other:totOther, cashOut:totCashOut}, flags:{negativeAmort} };
+}
+
+function investGrow(opts){
+  const {start, monthlyContrib, annualReturn, annualFees, annualTax, timing, horizon, contribOverride} = opts;
+  const i = (annualReturn - annualFees - annualTax)/100/12;
+  let bal = start;
+  const schedule = [];
+  for(let m=1; m<=horizon; m++){
+    const contrib = (contribOverride && contribOverride[m-1]!==undefined) ? contribOverride[m-1] : monthlyContrib;
+    if(timing==='start') bal += contrib;
+    bal = bal * (1+i);
+    if(timing==='end') bal += contrib;
+    schedule.push({m, balance:bal, contrib});
+  }
+  return {schedule, finalBalance:bal};
+}
+
+function runStrategy({loanOpts, invOpts, strategy, horizon}){
+  const lo = {...loanOpts};
+  if(strategy==='C') lo.extraPerMonth = loanOpts.extraPerMonth + invOpts.monthlyContrib;
+  
+  const loan = amortise({...lo, horizon});
+  const io = {...invOpts, horizon};
+  
+  if(strategy==='C'){
+    const override = [];
+    for(let m=1; m<=horizon; m++){
+      override[m-1] = (loan.settledMonth && m>loan.settledMonth) ? invOpts.monthlyContrib + loanOpts.extraPerMonth : 0;
+    }
+    io.contribOverride = override;
+  }
+  const inv = investGrow(io);
+
+  const timeline = [];
+  for(let m=0; m<=horizon; m++){
+    const ls = m===0 ? {closing:loanOpts.principal} : loan.schedule[m-1];
+    const is = m===0 ? {balance:invOpts.start} : inv.schedule[m-1];
+    timeline.push({m, debt:ls.closing, assets:is.balance + (invOpts.emergency||0), net: (is.balance + (invOpts.emergency||0)) - ls.closing});
+  }
+  return {loan, inv, timeline};
+}
+
+/* ============================================================
+   UI & RENDERING
+   ============================================================ */
+let charts = {};
+function getInputs(){
+  const v = id => parseFloat(document.getElementById(id).value)||0;
+  const s = id => document.getElementById(id).value;
+  let inst = v('loan_instalment');
+  if(!inst){
+    const P = v('loan_principal'), r = v('loan_rate')/100/12, n = v('loan_months');
+    inst = r===0 ? P/n : P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
+  return {
+    loanOpts:{ principal:v('loan_principal'), annualRate:v('loan_rate'), months:v('loan_months'), instalment:inst, clPremium:v('cl_premium'), clMethod:s('cl_method'), adminFee:v('admin_fee'), otherFees:v('other_fees'), extraPerMonth:v('extra_repay'), instalmentIncludes:s('instalment_includes')==='yes', horizon:v('horizon') },
+    invOpts:{ start:v('inv_current'), monthlyContrib:v('inv_contrib'), annualReturn:v('inv_return'), annualFees:v('inv_fees'), annualTax:v('inv_tax'), timing:s('inv_timing'), emergency:v('emergency'), horizon:v('horizon') },
+    horizon: v('horizon')
+  };
+}
+
+let lastResults = null;
+function runAll(){
+  const {loanOpts, invOpts, horizon} = getInputs();
+  const A = runStrategy({loanOpts, invOpts, strategy:'A', horizon});
+  const B = runStrategy({loanOpts, invOpts, strategy:'B', horizon});
+  const C = runStrategy({loanOpts, invOpts, strategy:'C', horizon});
+  lastResults = {A,B,C, loanOpts, invOpts, horizon};
+  
+  renderAlerts(loanOpts);
+  renderMetrics(A,B,C,loanOpts,invOpts);
+  renderCostBreakdown(A,B,C,loanOpts);
+  renderSummaryTable(A, B, C, loanOpts, invOpts);
+  renderChart('debt');
+  renderTableTabs();
+  
+  // Clear chat and add welcome message when recalculating
+  clearChat();
+  
+  setTimeout(() => {
+    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function renderAlerts(lo){
+  const box = document.getElementById('alerts');
+  box.innerHTML = '';
+  const add = (cls,msg) => box.innerHTML += `<div class="alert ${cls}">${msg}</div>`;
+  if(lo.flags.negativeAmort) add('danger','Payment is insufficient to cover interest. The loan balance would grow (negative amortisation).');
+  if(lo.annualRate > 28) add('warn','Interest rate exceeds 28% p.a. Verify this against your contract. NCA caps differ by credit category.');
+  if(lo.clMethod==='unknown') add('warn','Credit-life premium structure is unknown. Future premiums shown are unverified projections.');
+  if(lo.extraPerMonth>0) add('info','Extra repayments entered: '+ZAR(lo.extraPerMonth)+'/month. Confirm your contract allows these without penalty.');
+}
+
+function renderMetrics(A,B,C,lo,io){
+  const el = document.getElementById('metrics');
+  const mk = (tag,name,res) => {
+    const final = res.timeline[lo.horizon];
+    return `<div class="metric">
+      <div class="strategy-header"><span class="tag ${tag}">${tag.toUpperCase()}</span><h3>${name}</h3></div>
+      <div class="label">Investment at horizon</div><div class="value">${ZAR(final.assets - io.emergency)}</div>
+      <div class="label" style="margin-top:8px">Outstanding debt</div><div class="value">${ZAR(final.debt)}</div>
+      <div class="label" style="margin-top:8px">Net financial position</div><div class="value">${ZAR(final.net)}</div>
+      <div class="sub">Loan settled: ${res.loan.settledMonth ? 'Month '+res.loan.settledMonth : 'Not within horizon'}</div>
+    </div>`;
+  };
+  el.innerHTML = mk('a','Status Quo',A) + mk('b','Accelerate',B) + mk('c','Prioritise Debt',C);
+}
+
+function renderCostBreakdown(A,B,C,lo){
+  const el = document.getElementById('cost_breakdown');
+  const mk = (tag,name,res) => {
+    const t = res.loan.totals;
+    const financingCost = t.interest + t.cl + t.admin + t.other;
+    const orig = lo.principal;
+    return `<div class="metric" style="background:#fffdf7">
+      <div class="strategy-header"><span class="tag ${tag}">${tag.toUpperCase()}</span><h3>${name} — Costs</h3></div>
+      <div class="label">Principal repaid</div><div class="value">${ZAR(t.principal)}</div>
+      <div class="label" style="margin-top:6px">Interest</div><div class="sub">${ZAR(t.interest)} (${(t.interest/orig*100).toFixed(1)}% of original)</div>
+      <div class="label" style="margin-top:6px">Credit-life premiums</div><div class="sub">${ZAR(t.cl)}</div>
+      <div class="label" style="margin-top:6px">Admin & Other fees</div><div class="sub">${ZAR(t.admin + t.other)}</div>
+      <div class="label" style="margin-top:6px">Total financing cost</div><div class="value" style="color:var(--danger)">${ZAR(financingCost)}</div>
+    </div>`;
+  };
+  el.innerHTML = mk('a','Status Quo',A) + mk('b','Accelerate',B) + mk('c','Prioritise Debt',C);
+}
+
+function renderSummaryTable(A, B, C, lo, io) {
+  const el = document.getElementById('summary-table');
+  document.getElementById('summary-horizon-text').textContent = lo.horizon + ' months';
+
+  const getFinals = (res) => {
+    const finalMonth = res.timeline[res.timeline.length - 1];
+    const totals = res.loan.totals;
+    const totalCost = totals.interest + totals.cl + totals.admin + totals.other;
+    const netWorth = finalMonth.assets - finalMonth.debt; 
+    return { 
+      totalInterest: totals.interest, 
+      totalFees: totals.cl + totals.admin + totals.other,
+      totalCost, 
+      finalInvestment: finalMonth.assets - io.emergency, 
+      finalDebt: finalMonth.debt, 
+      netWorth 
+    };
+  };
+
+  const fA = getFinals(A);
+  const fB = getFinals(B);
+  const fC = getFinals(C);
+
+  const fmt = (v) => ZAR(v);
+  
+  const withDiff = (val, baseVal, isCost = false) => {
+    const diffVal = isCost ? (baseVal - val) : (val - baseVal); 
+    const absDiff = Math.abs(diffVal);
+    if (absDiff < 10) return fmt(val);
+    
+    const isBetter = diffVal >= 0;
+    const color = isBetter ? 'var(--ok)' : 'var(--danger)';
+    const arrow = isBetter ? '↑' : '↓';
+    const actionWord = isCost ? (isBetter ? 'Save' : 'Extra Cost') : (isBetter ? 'Gain' : 'Loss');
+    
+    return `${fmt(val)}<br><span style="font-size:11px; color:${color}; font-weight:600;">${arrow} ${actionWord} ${fmt(absDiff)} vs A</span>`;
+  };
+
+  const rows = [
+    { label: 'Total Interest Paid', a: fA.totalInterest, b: fB.totalInterest, c: fC.totalInterest, isCost: true },
+    { label: 'Total Fees & Insurance', a: fA.totalFees, b: fB.totalFees, c: fC.totalFees, isCost: true },
+    { label: '<strong>Total Cost of Debt</strong> <span class="hint">(Interest + Fees)</span>', a: fA.totalCost, b: fB.totalCost, c: fC.totalCost, isCost: true, isBold: true },
+    { label: 'Final Investment Value', a: fA.finalInvestment, b: fB.finalInvestment, c: fC.finalInvestment, isCost: false },
+    { label: 'Final Loan Balance', a: fA.finalDebt, b: fB.finalDebt, c: fC.finalDebt, isCost: true },
+    { label: '<strong>Final Net Worth</strong> <span class="hint">(Investments + Cash - Debt)</span>', a: fA.netWorth, b: fB.netWorth, c: fC.netWorth, isCost: false, isBold: true },
+  ];
+
+  let html = `<thead><tr>
+    <th style="text-align:left; width:35%;">Financial Outcome at Month ${lo.horizon}</th>
+    <th style="width:21%;"><span class="tag a">A</span><br>Status Quo</th>
+    <th style="width:22%;"><span class="tag b">B</span><br>Accelerate</th>
+    <th style="width:22%;"><span class="tag c">C</span><br>Prioritise Debt</th>
+  </tr></thead><tbody>`;
+
+  rows.forEach(row => {
+    const fontWeight = row.isBold ? 'font-weight:700; color:var(--green-900); background: #fdfaf2;' : '';
+    html += `<tr>
+      <td style="text-align:left; padding: 12px; ${fontWeight}">${row.label}</td>
+      <td style="padding: 12px;">${fmt(row.a)}</td>
+      <td style="padding: 12px;">${withDiff(row.b, row.a, row.isCost)}</td>
+      <td style="padding: 12px;">${withDiff(row.c, row.a, row.isCost)}</td>
+    </tr>`;
+  });
+
+  html += `</tbody>`;
+  el.innerHTML = html;
+}
+
+/* ============================================================
+   CHAT ASSISTANT FUNCTIONS
+   ============================================================ */
+function addChatMessage(text, isUser = false) {
+  const container = document.getElementById('chat-container');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+  messageDiv.textContent = text;
+  container.appendChild(messageDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+function clearChat() {
+  const container = document.getElementById('chat-container');
+  container.innerHTML = '<div class="chat-message bot"> Hello! I\'m here to help you understand your debt vs investment comparison. What would you like to know?</div>';
+}
+
+function handleChatKeypress(event) {
+  if (event.key === 'Enter') {
+    sendChatMessage();
+  }
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const question = input.value.trim();
+  if (question) {
+    addChatMessage(question, true);
+    input.value = '';
+    setTimeout(() => generateResponse(question), 500);
+  }
+}
+
+function askQuestion(question) {
+  addChatMessage(question, true);
+  setTimeout(() => generateResponse(question), 500);
+}
+
+function generateResponse(question) {
+  if (!lastResults) {
+    addChatMessage("Please calculate your results first by clicking 'Calculate & Compare'.", false);
+    return;
+  }
+
+  const { A, B, C, loanOpts, invOpts } = lastResults;
+  const q = question.toLowerCase();
+  
+  let response = "";
+
+  if (q.includes('best') || q.includes('saves') || q.includes('most money')) {
+    const aNet = A.timeline[A.timeline.length-1].net;
+    const bNet = B.timeline[B.timeline.length-1].net;
+    const cNet = C.timeline[C.timeline.length-1].net;
+    
+    const best = Math.max(aNet, bNet, cNet);
+    let bestStrategy = "Strategy A (Status Quo)";
+    if (best === bNet) bestStrategy = "Strategy B (Accelerate)";
+    if (best === cNet) bestStrategy = "Strategy C (Prioritise Debt)";
+    
+    response = `Based on your numbers, <strong>${bestStrategy}</strong> gives you the highest net worth at the end: ${ZAR(best)}. `;
+    
+    if (best === cNet && loanOpts.annualRate > invOpts.annualReturn - invOpts.annualFees) {
+      response += "This makes sense because your loan interest rate is higher than your investment return, so paying off debt first saves you more money.";
+    } else if (best === aNet || best === bNet) {
+      response += "Keeping your investments running while paying debt gives you better long-term growth in your case.";
+    }
+  }
+  else if (q.includes('payoff') || q.includes('when') || q.includes('date') || q.includes('month')) {
+    response = `<strong>Loan payoff timeline:</strong><br>`;
+    response += `• Strategy A: ${A.loan.settledMonth ? `Month ${A.loan.settledMonth}` : 'Not within projection period'}<br>`;
+    response += `• Strategy B: ${B.loan.settledMonth ? `Month ${B.loan.settledMonth}` : 'Not within projection period'}<br>`;
+    response += `• Strategy C: ${C.loan.settledMonth ? `Month ${C.loan.settledMonth}` : 'Not within projection period'}<br><br>`;
+    
+    if (C.loan.settledMonth && A.loan.settledMonth) {
+      const monthsSaved = A.loan.settledMonth - C.loan.settledMonth;
+      if (monthsSaved > 0) {
+        response += `✅ Strategy C pays off your loan <strong>${monthsSaved} months earlier</strong> than Strategy A!`;
+      }
+    }
+  }
+  else if (q.includes('priorit') || q.includes('debt') || q.includes('investment') || q.includes('should i')) {
+    const loanRate = loanOpts.annualRate;
+    const invReturn = invOpts.annualReturn - invOpts.annualFees;
+    
+    response = `<strong>Debt vs Investment Decision:</strong><br><br>`;
+    response += `Your loan interest rate: <strong>${loanRate}% per year</strong><br>`;
+    response += `Your investment return (after fees): <strong>${invReturn}% per year</strong><br><br>`;
+    
+    if (loanRate > invReturn) {
+      response += `🎯 <strong>Recommendation:</strong> Your loan costs you more than your investments earn. Consider <strong>Strategy C (Prioritise Debt)</strong> to save on interest costs.<br><br>`;
+      response += `<em>However, also consider:</em><br>`;
+      response += `• Do you have an emergency fund? (You have R${ZAR(invOpts.emergency)})<br>`;
+      response += `• Are you comfortable with less liquidity while paying off debt?<br>`;
+      response += `• Tax implications on your investment vehicle`;
+    } else {
+      response += `🎯 <strong>Recommendation:</strong> Your investments earn more than your loan costs. Consider <strong>Strategy A or B</strong> to keep investing while making regular payments.<br><br>`;
+      response += `<em>But remember:</em><br>`;
+      response += `• Being debt-free has psychological benefits<br>`;
+      response += `• Investment returns are not guaranteed<br>`;
+      response += `• Loan interest is a guaranteed "return" when you pay it off early`;
+    }
+  }
+  else if (q.includes('interest') || q.includes('save')) {
+    const aInterest = A.loan.totals.interest;
+    const bInterest = B.loan.totals.interest;
+    const cInterest = C.loan.totals.interest;
+    
+    const bSavings = aInterest - bInterest;
+    const cSavings = aInterest - cInterest;
+    
+    response = `<strong>Interest Savings Comparison:</strong><br><br>`;
+    response += `Strategy A (Status Quo): ${ZAR(aInterest)} in interest<br>`;
+    response += `Strategy B (Accelerate): ${ZAR(bInterest)} in interest<br>`;
+    response += `Strategy C (Prioritise Debt): ${ZAR(cInterest)} in interest<br><br>`;
+    
+    if (cSavings > 0) {
+      response += `💰 <strong>Strategy C saves you ${ZAR(cSavings)}</strong> in interest compared to Status Quo!<br>`;
+    }
+    if (bSavings > 0 && bSavings < cSavings) {
+      response += `💰 <strong>Strategy B saves you ${ZAR(bSavings)}</strong> in interest compared to Status Quo.`;
+    }
+  }
+  else if (q.includes('fees') || q.includes('insurance') || q.includes('credit-life')) {
+    const aFees = A.loan.totals.cl + A.loan.totals.admin + A.loan.totals.other;
+    const cFees = C.loan.totals.cl + C.loan.totals.admin + C.loan.totals.other;
+    
+    response = `<strong>Fees & Insurance Breakdown:</strong><br><br>`;
+    response += `<strong>Strategy A:</strong><br>`;
+    response += `• Credit-life insurance: ${ZAR(A.loan.totals.cl)}<br>`;
+    response += `• Admin fees: ${ZAR(A.loan.totals.admin)}<br>`;
+    response += `• Other fees: ${ZAR(A.loan.totals.other)}<br><br>`;
+    
+    response += `<strong>Strategy C:</strong><br>`;
+    response += `• Credit-life insurance: ${ZAR(C.loan.totals.cl)}<br>`;
+    response += `• Admin fees: ${ZAR(C.loan.totals.admin)}<br>`;
+    response += `• Other fees: ${ZAR(C.loan.totals.other)}<br><br>`;
+    
+    if (cFees < aFees) {
+      response += `✅ Strategy C saves you ${ZAR(aFees - cFees)} in fees by paying off the loan faster!`;
+    }
+  }
+  else if (q.includes('risk') || q.includes('safe') || q.includes('conservative')) {
+    response = `<strong>Risk Considerations:</strong><br><br>`;
+    response += `<strong>Strategy A & B (Keep Investing):</strong><br>`;
+    response += `✓ Maintain investment growth potential<br>`;
+    response += `✓ Keep liquidity in investments<br>`;
+    response += `⚠ Investment returns not guaranteed<br>`;
+    response += ` Market volatility risk<br><br>`;
+    
+    response += `<strong>Strategy C (Pay Debt First):</strong><br>`;
+    response += `✓ Guaranteed "return" by saving interest<br>`;
+    response += `✓ Debt-free peace of mind<br>`;
+    response += `✓ Lower monthly expenses after settlement<br>`;
+    response += `⚠ Less liquidity during payoff period<br>`;
+    response += `⚠ Miss potential investment growth<br><br>`;
+    
+    response += `<em>Consider your risk tolerance, job security, and financial goals when choosing.</em>`;
+  }
+  else if (q.includes('recommend') || q.includes('suggest') || q.includes('advice')) {
+    const aNet = A.timeline[A.timeline.length-1].net;
+    const cNet = C.timeline[C.timeline.length-1].net;
+    const loanRate = loanOpts.annualRate;
+    const invReturn = invOpts.annualReturn - invOpts.annualFees;
+    
+    response = `<strong>Personalised Recommendation:</strong><br><br>`;
+    
+    if (loanRate > invReturn + 3) {
+      response += `🎯 <strong>Strong recommendation for Strategy C</strong><br><br>`;
+      response += `Your loan rate (${loanRate}%) is significantly higher than your investment return (${invReturn}%). `;
+      response += `By prioritising debt, you'll save ${ZAR(A.loan.totals.interest - C.loan.totals.interest)} in interest and be debt-free ${A.loan.settledMonth - C.loan.settledMonth} months earlier.<br><br>`;
+      response += `<em>After the loan is paid off, invest the full monthly amount you were paying toward the loan.</em>`;
+    } else if (loanRate > invReturn) {
+      response += `🎯 <strong>Consider Strategy C or B</strong><br><br>`;
+      response += `Your loan rate is higher than your investment return, but the gap is smaller. `;
+      response += `Strategy C gives you the best financial outcome (${ZAR(cNet)} vs ${ZAR(aNet)}), but Strategy B offers a middle ground.<br><br>`;
+    } else {
+      response += `🎯 <strong>Strategy A or B may be better</strong><br><br>`;
+      response += `Your investments earn more than your loan costs. Keeping money invested while making regular payments could give you better long-term wealth.<br><br>`;
+      response += `However, if being debt-free is important to you emotionally, Strategy C still has merit.`;
+    }
+  }
+  else {
+    response = `I can help you with questions like:<br><br>`;
+    response += `• "Which strategy saves me the most money?"<br>`;
+    response += `• "When will my loan be paid off?"<br>`;
+    response += `• "Should I prioritise debt or investment?"<br>`;
+    response += `• "How much interest will I save?"<br>`;
+    response += `• "What about fees and insurance?"<br>`;
+    response += `• "What are the risks?"<br>`;
+    response += `• "What do you recommend?"`;
+  }
+  
+  addChatMessage(response, false);
+}
+
+function renderChart(which){
+  const {A,B,C,horizon} = lastResults;
+  const labels = Array.from({length:horizon+1},(_,i)=>i);
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  if(charts.main) charts.main.destroy();
+  
+  let cfg;
+  if(which==='debt'){
+    cfg = { type:'line', data:{labels, datasets:[
+      {label:'A — Debt', data:A.timeline.map(t=>t.debt), borderColor:'#2f8f6a', backgroundColor:'#2f8f6a22', tension:.3},
+      {label:'B — Debt', data:B.timeline.map(t=>t.debt), borderColor:'#b07a1b', backgroundColor:'#b07a1b22', tension:.3},
+      {label:'C — Debt', data:C.timeline.map(t=>t.debt), borderColor:'#b23b3b', backgroundColor:'#b23b3b22', tension:.3},
+      {label:'A — Investment', data:A.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#2f8f6a', borderDash:[5,5], tension:.3},
+      {label:'B — Investment', data:B.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#b07a1b', borderDash:[5,5], tension:.3},
+      {label:'C — Investment', data:C.timeline.map(t=>t.assets-lastResults.invOpts.emergency), borderColor:'#b23b3b', borderDash:[5,5], tension:.3},
+    ]}, options:chartOpts('Rands') };
+  } else if(which==='net'){
+    cfg = { type:'line', data:{labels, datasets:[
+      {label:'A — Net Position', data:A.timeline.map(t=>t.net), borderColor:'#2f8f6a', backgroundColor:'#2f8f6a33', fill:true, tension:.3},
+      {label:'B — Net Position', data:B.timeline.map(t=>t.net), borderColor:'#b07a1b', backgroundColor:'#b07a1b33', fill:true, tension:.3},
+      {label:'C — Net Position', data:C.timeline.map(t=>t.net), borderColor:'#b23b3b', backgroundColor:'#b23b3b33', fill:true, tension:.3},
+    ]}, options:chartOpts('Rands') };
+  } else {
+    const cumCost = res => { let cum=0; const arr=[0]; res.loan.schedule.forEach(s=>{cum += s.interest+s.cl+s.admin+s.other; arr.push(cum);}); return arr; };
+    cfg = { type:'line', data:{labels, datasets:[
+      {label:'A — Cumulative Cost', data:cumCost(A), borderColor:'#2f8f6a', tension:.3},
+      {label:'B — Cumulative Cost', data:cumCost(B), borderColor:'#b07a1b', tension:.3},
+      {label:'C — Cumulative Cost', data:cumCost(C), borderColor:'#b23b3b', tension:.3},
+    ]}, options:chartOpts('Rands') };
+  }
+  charts.main = new Chart(ctx,cfg);
+}
+
+function chartOpts(yLabel){
+  return {
+    responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+    plugins:{ legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+ZAR(c.parsed.y)}} },
+    scales:{ x:{title:{display:true,text:'Month'}}, y:{title:{display:true,text:yLabel}, ticks:{callback:v=>'R'+v.toLocaleString('en-ZA')}} }
+  };
+}
+
+function showChart(which,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderChart(which);
+}
+
+function renderTableTabs(){
+  const el = document.getElementById('tableTabs');
+  el.innerHTML = ['A','B','C'].map((t,i)=> `<div class="tab ${i===0?'active':''}" onclick="showTable('${t}',this)">${t} — Schedule</div>`).join('');
+  showTable('A',el.firstChild);
+}
+
+function showTable(tag,el){
+  document.querySelectorAll('#tableTabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const res = lastResults[tag];
+  const checkpoints = new Set([1,6,12,24,36,lastResults.horizon]);
+  const rows = res.loan.schedule.filter(s=>checkpoints.has(s.m) || s.m===res.loan.settledMonth).map(s=>{
+    const inv = res.inv.schedule[s.m-1];
+    return `<tr><td>${s.m}</td><td>${ZAR(s.opening)}</td><td>${ZAR(s.interest)}</td><td>${ZAR(s.principal)}</td><td>${ZAR(s.closing)}</td><td>${ZAR(s.cl)}</td><td>${ZAR(s.admin)}</td><td>${ZAR(inv?inv.balance:0)}</td><td>${ZAR((inv?inv.balance:0)+lastResults.invOpts.emergency - s.closing)}</td></tr>`;
+  }).join('');
+  document.getElementById('monthlyTable').innerHTML = `<table><thead><tr><th>Month</th><th>Opening</th><th>Interest</th><th>Principal</th><th>Closing</th><th>Insurance</th><th>Admin</th><th>Investment</th><th>Net Position</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function resetDefaults(){
+  document.getElementById('loan_principal').value=100000;
+  document.getElementById('loan_rate').value=23;
+  document.getElementById('loan_months').value=29;
+  document.getElementById('loan_instalment').value=4550;
+  document.getElementById('cl_premium').value=180;
+  document.getElementById('cl_method').value='fixed';
+  document.getElementById('admin_fee').value=69;
+  document.getElementById('other_fees').value=0;
+  document.getElementById('instalment_includes').value='no';
+  document.getElementById('extra_repay').value=0;
+  document.getElementById('inv_current').value=50000;
+  document.getElementById('inv_contrib').value=1000;
+  document.getElementById('inv_return').value=10;
+  document.getElementById('inv_fees').value=1.5;
+  document.getElementById('inv_tax').value=0;
+  document.getElementById('inv_timing').value='end';
+  document.getElementById('emergency').value=20000;
+  document.getElementById('horizon').value=60;
+  runAll();
+}
+
+function runTests(){
+  const el = document.getElementById('testResults');
+  const tests = [];
+  const approx = (a,b,tol=1) => Math.abs(a-b)<=tol;
+  
+  (function(){
+    const r = amortise({principal:50000, annualRate:20, months:24, instalment:2550, clPremium:200, clMethod:'declining', adminFee:69, otherFees:0, extraPerMonth:0, instalmentIncludes:false, horizon:24});
+    const m1 = r.schedule[0];
+    tests.push({title:'1. R50k declining-balance loan', expected:'Month 1 interest R833.33', actual:`M1 interest ${ZAR2(m1.interest)}`, pass:approx(m1.interest, 833.33, 0.1)});
+  })();
+  (function(){
+    const r = amortise({principal:100000, annualRate:23, months:29, instalment:500, clPremium:0, clMethod:'fixed', adminFee:0, otherFees:0, extraPerMonth:0, instalmentIncludes:false, horizon:29});
+    tests.push({title:'2. Instalment insufficient (R500 on R100k @23%)', expected:'Negative amortisation flagged', actual:`negativeAmort=${r.flags.negativeAmort}`, pass:r.flags.negativeAmort});
+  })();
+  
+  el.innerHTML = tests.map(t=>`<div class="test"><div class="title">${t.title}</div><div><strong>Expected:</strong> ${t.expected}</div><div><strong>Actual:</strong> ${t.actual}</div><div class="${t.pass?'pass':'fail'}">${t.pass?'✓ PASS':'✗ FAIL'}</div></div>`).join('');
+}
+
+window.addEventListener('load', runAll);
+</script>
+</body>
+</html>
